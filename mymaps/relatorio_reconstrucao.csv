@@ -1,0 +1,442 @@
+﻿operacao;setor;area;grupo_ou_equipe;trechos_total;trechos_ok;trechos_nao_encontrados;extensao_m;amostra_nao_encontradas
+domiciliar;01.01;Área 08;Grupo 01;17;17;0;5739;
+domiciliar;01.03;Área 08;Grupo 01;10;10;0;8128;
+domiciliar;01.05;Área 08;Grupo 01;19;19;0;6840;
+domiciliar;01.07;Área 08;Grupo 01;19;19;0;10261;
+domiciliar;01.09;Área 08;Grupo 01;30;30;0;10451;
+domiciliar;01.11;Área 08;Grupo 01;23;23;0;12038;
+domiciliar;01.13;Área 07;Grupo 01;29;29;0;13499;
+domiciliar;01.15;Área 09;Grupo 01;27;27;0;13097;
+domiciliar;01.17;Área 09;Grupo 01;27;27;0;10956;
+domiciliar;01.19;Área 09;Grupo 01;23;23;0;10870;
+domiciliar;01.21;Área 09;Grupo 01;30;30;0;10612;
+domiciliar;01.23;Área 09;Grupo 01;30;30;0;6644;
+domiciliar;01.25;Área 10;Grupo 01;30;30;0;12137;
+domiciliar;01.27;Área 09;Grupo 01;30;30;0;11343;
+domiciliar;01.29;Área 09;Grupo 01;21;21;0;17865;
+domiciliar;01.31;Área 06;Grupo 01;30;29;1;24827;Rua do Fio
+domiciliar;01.33;Área 09;Grupo 01;30;30;0;9707;
+domiciliar;01.35;Área 09;Grupo 01;30;29;1;8427;Passagem União
+domiciliar;01.37;Área 05;Grupo 01;30;30;0;8200;
+domiciliar;01.39;Área 05;Grupo 01;30;30;0;9332;
+domiciliar;01.41;Área 05;Grupo 01;30;29;1;18189;Rua 16 de Novembro
+domiciliar;01.43;Área 03;Grupo 01;30;30;0;7254;
+domiciliar;01.45;Área 03;Grupo 01;30;30;0;6936;
+domiciliar;01.47;Área 03;Grupo 01;27;27;0;10869;
+domiciliar;01.49;Área 03;Grupo 01;30;30;0;9326;
+domiciliar;01.51;Área 03;Grupo 01;30;30;0;17396;
+domiciliar;01.53;Área 03;Grupo 01;30;29;1;7490;Passagem Fé em Deus
+domiciliar;01.55;Área 03;Grupo 01;30;27;3;12469;"Alameda E; Avenida B; Avenida B"
+domiciliar;01.57;Área 03;Grupo 01;30;30;0;13316;
+domiciliar;01.59;Área 03;Grupo 01;30;28;2;7101;"Alameda E; Passagem São Pedro"
+domiciliar;01.61;Área 02;Grupo 01;30;30;0;15153;
+domiciliar;01.63;Área 02;Grupo 01;30;30;0;16560;
+domiciliar;01.65;Área 01;Grupo 01;23;21;2;11277;"Rua Sem Nome; Rua Sem Nome"
+domiciliar;01.67;Área 01;Grupo 01;30;30;0;27975;
+domiciliar;01.69;Área 01;Grupo 01;30;30;0;21795;
+domiciliar;01.71;Área 01;Grupo 01;19;13;6;15852;"Rua Dmer; Rua Lalor Mota; Rua Sem Nome; Rua Sem Nome; Rua Sem Nome; Rua Sem Nome"
+domiciliar;02.02;Área 08;Grupo 02;9;9;0;2580;
+domiciliar;02.04;Área 08;Grupo 02;23;22;1;9157;Passagem Monte Alegre
+domiciliar;02.06;Área 08;Grupo 02;12;12;0;11874;
+domiciliar;02.08;Área 07;Grupo 02;12;12;0;7263;
+domiciliar;02.10;Área 08;Grupo 02;19;19;0;6956;
+domiciliar;02.12;Área 08;Grupo 02;17;17;0;7133;
+domiciliar;02.14;Área 08;Grupo 02;24;24;0;7854;
+domiciliar;02.16;Área 07;Grupo 02;16;16;0;13203;
+domiciliar;02.18;Área 08;Grupo 02;20;20;0;5639;
+domiciliar;02.20;Área 08;Grupo 02;14;14;0;4103;
+domiciliar;02.22;Área 07;Grupo 02;26;24;2;10931;"Rua Sem Nome (Entre Passagem Praina e R Sem Nome (Entre R Prof N; Rua Sem Nome (Entre Rua Professor Nelson Ribeiro e Travessa Corone"
+domiciliar;02.24;Área 07;Grupo 02;30;30;0;5530;
+domiciliar;02.26;Área 07;Grupo 02;30;30;0;8658;
+domiciliar;02.28;Área 07;Grupo 02;30;30;0;9713;
+domiciliar;02.30;Área 07;Grupo 02;30;30;0;7057;
+domiciliar;02.32;Área 07;Grupo 02;30;30;0;15498;
+domiciliar;02.34;Área 07;Grupo 02;29;29;0;15058;
+domiciliar;02.36;Área 07;Grupo 02;30;30;0;7552;
+domiciliar;02.38;Área 04;Grupo 02;25;25;0;9238;
+domiciliar;02.40;Área 04;Grupo 02;30;29;1;17214;Passagem São Pedro
+domiciliar;02.42;Área 04;Grupo 02;30;30;0;7289;
+domiciliar;02.44;Área 04;Grupo 02;30;30;0;7524;
+domiciliar;02.46;Área 04;Grupo 02;30;27;3;4457;"Alameda 5; Alameda 9; Alameda 9"
+domiciliar;02.48;Área 04;Grupo 02;30;30;0;7836;
+domiciliar;02.50;Área 03;Grupo 02;30;30;0;12143;
+domiciliar;02.52;Área 04;Grupo 02;30;27;3;7331;"Alameda H; Alameda H; Alameda M"
+domiciliar;02.54;Área 03;Grupo 02;30;29;1;14784;Passagem das Flores
+domiciliar;02.56;Área 03;Grupo 02;30;27;3;11023;"Alameda E; Rua Dois; Rua Sem Nome"
+domiciliar;02.58;Área 03;Grupo 02;30;30;0;6467;
+domiciliar;02.60;Área 03;Grupo 02;30;29;1;6161;Alameda H
+domiciliar;02.62;Área 02;Grupo 02;30;30;0;16831;
+domiciliar;02.64;Área 02;Grupo 02;30;29;1;16722;Rua São Jorge
+domiciliar;02.66;Área 01;Grupo 02;30;27;3;11976;"Rua Sem Nome; Rua Sem Nome; Rua Sem Nome"
+domiciliar;02.68;Área 01;Grupo 02;15;14;1;9022;Rua Sem Nome
+domiciliar;02.70;Área 01;Grupo 02;20;18;2;21974;"Rua Sem Nome; Rua Sem Nome"
+domiciliar;02.72;Área 01;Grupo 02;22;20;2;12962;"Rua Sem Nome; Rua Sem Nome"
+domiciliar;03.01;Área 05;Grupo 03;30;30;0;7867;
+domiciliar;03.03;Área 05;Grupo 03;30;30;0;8477;
+domiciliar;03.05;Área 05;Grupo 03;21;18;3;4795;"Alameda 1; Alameda 2; Rua Belém"
+domiciliar;03.07;Área 05;Grupo 03;30;28;2;8616;"Passagem Bom Jesus; Passagem São Pedro"
+domiciliar;03.09;Área 05;Grupo 03;30;30;0;12353;
+domiciliar;03.11;Área 05;Grupo 03;30;30;0;9486;
+domiciliar;03.13;Área 05;Grupo 03;30;28;2;13960;"Rua 1; Rua B"
+domiciliar;03.15;Área 05;Grupo 03;30;26;4;10687;"Alameda 10; Alameda 4; Alameda 5; Alameda 9"
+domiciliar;03.17;Área 05;Grupo 03;30;30;0;15172;
+domiciliar;03.19;Área 05;Grupo 03;29;29;0;14250;
+domiciliar;03.21;Área 05;Grupo 03;17;17;0;7594;
+domiciliar;03.23;Área 05;Grupo 03;30;30;0;7188;
+domiciliar;03.25;Área 05;Grupo 03;27;26;1;11363;Rua São José
+domiciliar;03.27;Área 05;Grupo 03;30;30;0;5269;
+domiciliar;03.29;Área 04;Grupo 03;30;29;1;6765;Rua Dois
+domiciliar;03.31;Área 04;Grupo 03;30;30;0;10214;
+domiciliar;03.33;Área 03;Grupo 03;30;30;0;8114;
+domiciliar;03.35;Área 04;Grupo 03;28;24;4;21744;"Rua Natal; Rua Sem Nome (entre Pass. Sofia Feio x Pass.Marcos Pereira, alt. do n; Travessa E; Travessa E"
+domiciliar;03.37;Área 04;Grupo 03;10;9;1;19195;Alameda Dom Jesus
+domiciliar;03.39;Área 03;Grupo 03;17;17;0;15636;
+domiciliar;04.02;Área 08;Grupo 04;21;21;0;7446;
+domiciliar;04.04;Área 08;Grupo 04;14;14;0;6819;
+domiciliar;04.06;Área 07;Grupo 04;15;15;0;8688;
+domiciliar;04.08;Área 07;Grupo 04;30;30;0;9921;
+domiciliar;04.10;Área 07;Grupo 04;30;30;0;9640;
+domiciliar;04.12;Área 10;Grupo 04;30;30;0;19610;
+domiciliar;04.14;Área 10;Grupo 04;30;26;4;9674;"Passagem E; Passagem E; Passagem H; Passagem H"
+domiciliar;04.16;Área 06;Grupo 04;23;23;0;36719;
+domiciliar;04.18;Área 09;Grupo 04;20;19;1;14819;Rua Sem Nome (Entre Avenida Almirante Barroso e Avenida Almirante
+domiciliar;04.20;Área 06;Grupo 04;30;29;1;9546;Passagem São Francisco
+domiciliar;04.22;Área 06;Grupo 04;30;27;3;10035;"Rua A; Rua B; Rua B"
+domiciliar;04.24;Área 06;Grupo 04;30;30;0;7876;
+domiciliar;04.26;Área 06;Grupo 04;30;30;0;11423;
+domiciliar;04.28;Área 06;Grupo 04;30;28;2;9360;"Alameda B; Alameda B"
+domiciliar;04.30;Área 06;Grupo 04;30;30;0;7949;
+domiciliar;04.32;Área 06;Grupo 04;30;29;1;5944;Alameda 3
+domiciliar;04.34;Área 06;Grupo 04;30;29;1;10202;Passagem Bom Jesus
+domiciliar;04.36;Área 05;Grupo 04;30;30;0;11610;
+domiciliar;04.38;Área 06;Grupo 04;30;30;0;10122;
+domiciliar;04.40;Área 07;Grupo 04;30;30;0;7021;
+domiciliar;05.01;Área 07;Grupo 05;30;30;0;11149;
+domiciliar;05.03;Área 07;Grupo 05;19;19;0;7370;
+domiciliar;05.05;Área 07;Grupo 05;21;21;0;6164;
+domiciliar;05.07;Área 07;Grupo 05;23;23;0;8317;
+domiciliar;05.09;Área 07;Grupo 05;30;30;0;16672;
+domiciliar;05.13;Área 07;Grupo 05;18;18;0;10516;
+domiciliar;05.15;Área 07;Grupo 05;22;22;0;7377;
+domiciliar;05.17;Área 07;Grupo 05;18;18;0;7642;
+domiciliar;05.19;Área 07;Grupo 05;14;14;0;8918;
+domiciliar;05.21;Área 07;Grupo 05;14;14;0;8684;
+domiciliar;05.23;Área 10;Grupo 05;30;30;0;11481;
+domiciliar;05.25;Área 10;Grupo 05;30;30;0;13256;
+domiciliar;05.27;Área 10;Grupo 05;24;24;0;11193;
+domiciliar;05.29;Área 10;Grupo 05;30;30;0;29267;
+domiciliar;05.31;Área 10;Grupo 05;30;30;0;10993;
+domiciliar;05.33;Área 05;Grupo 05;14;14;0;30599;
+domiciliar;05.35;Área 03;Grupo 05;13;13;0;34113;
+domiciliar;05.37;Área 03;Grupo 05;30;28;2;45407;"Alameda Manaus; Rua Sem Nome 1 (acesso pela R. Cel. Juvêncio Sarmento, alt. do n° 17"
+domiciliar;05.41;Área 03;Grupo 05;16;15;1;42022;Acesso (p/ R. 2 de Dezembro)
+domiciliar;05.43;Área 07;Grupo 05;30;23;7;30241;"Avenida Bernardo Sayão; Avenida Bernardo Sayão; Avenida Bernardo Sayão; Avenida Bernardo Sayão; Avenida Bernardo Sayão; Avenida Bernardo Sayão; Avenida Bernardo Sayão"
+domiciliar;05.45;Área 06;Grupo 05;30;29;1;32273;Acesso (Rod. Augusto Montenegro)
+domiciliar;05.47;Área 10;Grupo 05;26;26;0;50686;
+domiciliar;06.02;Área 08;Grupo 06;30;30;0;26736;
+domiciliar;06.04;Área 09;Grupo 06;30;28;2;44452;"Rodovia Arthur Bernardes; Rotatória"
+domiciliar;06.06;Área 10;Grupo 06;30;30;0;43557;
+mutirao;MT01250101;Área 1;Equipe 1;12;11;1;5194;Rua sem nome
+mutirao;MT01250102;Área 1;Equipe 1;10;10;0;5030;
+mutirao;MT01250103;Área 1;Equipe 1;1;1;0;11122;
+mutirao;MT01250104;Área 1;Equipe 1;7;4;3;15317;"Rua sem nome; Rua sem nome; Rua sem nome"
+mutirao;MT01250105;Área 1;Equipe 1;9;9;0;8337;
+mutirao;MT01300201;Área 1;Equipe 2;9;8;1;6109;Rua sem nome
+mutirao;MT01300202;Área 1;Equipe 2;14;12;2;7998;"Rua sem nome; Rua sem nome"
+mutirao;MT01300203;Área 1;Equipe 2;9;9;0;5068;
+mutirao;MT01300204;Área 1;Equipe 2;14;13;1;6120;Rua sem nome
+mutirao;MT01300205;Área 1;Equipe 2;4;4;0;14702;
+mutirao;MT01300206;Área 1;Equipe 2;6;6;0;13876;
+mutirao;MT02300301;Área 2;Equipe 3;3;3;0;6913;
+mutirao;MT02300302;Área 2;Equipe 3;11;11;0;4867;
+mutirao;MT02300303;Área 2;Equipe 3;4;4;0;6038;
+mutirao;MT02300304;Área 2;Equipe 3;15;15;0;4978;
+mutirao;MT02300305;Área 2;Equipe 3;9;9;0;5425;
+mutirao;MT02300306;Área 2;Equipe 3;9;9;0;5664;
+mutirao;MT03200401;Área 3;Equipe 4;8;8;0;7606;
+mutirao;MT03200402;Área 3;Equipe 4;8;8;0;5912;
+mutirao;MT03200403;Área 3;Equipe 4;14;14;0;5277;
+mutirao;MT03200404;Área 3;Equipe 4;8;8;0;4125;
+mutirao;MT03300501;Área 3;Equipe 5;10;10;0;5116;
+mutirao;MT03300502;Área 3;Equipe 5;11;11;0;10062;
+mutirao;MT03300503;Área 3;Equipe 5;7;7;0;6828;
+mutirao;MT03300504;Área 3;Equipe 5;27;27;0;9076;
+mutirao;MT03300505;Área 3;Equipe 5;28;28;0;6607;
+mutirao;MT03300506;Área 3;Equipe 5;19;19;0;5179;
+mutirao;MT03600601;Área 3;Equipe 6;21;20;1;4465;Rua Sem Nome (entre R. Jarbas Passarinho x R. da Mata, alt. do n° 17
+mutirao;MT03600602;Área 3;Equipe 6;24;24;0;6157;
+mutirao;MT03600603;Área 3;Equipe 6;18;18;0;4945;
+mutirao;MT03600604;Área 3;Equipe 6;20;20;0;5616;
+mutirao;MT03600605;Área 3;Equipe 6;24;24;0;4880;
+mutirao;MT03600606;Área 3;Equipe 6;22;22;0;4999;
+mutirao;MT03600607;Área 3;Equipe 6;15;15;0;5071;
+mutirao;MT03600608;Área 3;Equipe 6;19;19;0;5606;
+mutirao;MT03600609;Área 3;Equipe 6;18;18;0;6750;
+mutirao;MT03600610;Área 3;Equipe 6;19;19;0;5673;
+mutirao;MT03600611;Área 3;Equipe 6;32;32;0;7645;
+mutirao;MT03600612;Área 3;Equipe 6;20;20;0;4005;
+mutirao;MT03900701;Área 3;Equipe 7;19;19;0;7725;
+mutirao;MT03900702;Área 3;Equipe 7;25;25;0;5069;
+mutirao;MT03900703;Área 3;Equipe 7;24;24;0;7087;
+mutirao;MT03900704;Área 3;Equipe 7;21;20;1;5831;Alameda H
+mutirao;MT03900705;Área 3;Equipe 7;20;20;0;5634;
+mutirao;MT03900706;Área 3;Equipe 7;25;24;1;7687;Alameda E
+mutirao;MT03900707;Área 3;Equipe 7;23;23;0;8138;
+mutirao;MT03900708;Área 3;Equipe 7;22;22;0;5217;
+mutirao;MT03900709;Área 3;Equipe 7;30;29;1;4933;Alameda E
+mutirao;MT03900710;Área 3;Equipe 7;27;26;1;7090;Rua Sem Nome (entre R. Quadra A Morada de Deus I x Pass. Piraiba d
+mutirao;MT03900711;Área 3;Equipe 7;19;19;0;4904;
+mutirao;MT03900712;Área 3;Equipe 7;24;23;1;4379;Travessa E
+mutirao;MT03900713;Área 3;Equipe 7;13;13;0;6464;
+mutirao;MT03900714;Área 3;Equipe 7;22;22;0;5397;
+mutirao;MT03900715;Área 3;Equipe 7;32;32;0;4222;
+mutirao;MT03900716;Área 3;Equipe 7;26;26;0;5564;
+mutirao;MT03900717;Área 3;Equipe 7;30;30;0;5657;
+mutirao;MT03900718;Área 3;Equipe 7;28;28;0;5637;
+mutirao;MT04250801;Área 4;Equipe 8;4;4;0;4758;
+mutirao;MT04250802;Área 4;Equipe 8;5;5;0;9993;
+mutirao;MT04250803;Área 4;Equipe 8;6;6;0;9350;
+mutirao;MT04250804;Área 4;Equipe 8;16;16;0;4691;
+mutirao;MT04250805;Área 4;Equipe 8;13;13;0;3979;
+mutirao;MT04250901;Área 4;Equipe 9;22;22;0;3779;
+mutirao;MT04250902;Área 4;Equipe 9;15;15;0;4431;
+mutirao;MT04250903;Área 4;Equipe 9;21;21;0;4492;
+mutirao;MT04250904;Área 4;Equipe 9;24;24;0;4559;
+mutirao;MT04250905;Área 4;Equipe 9;9;9;0;4896;
+mutirao;MT04901001;Área 4;Equipe 10;5;5;0;5005;
+mutirao;MT04901002;Área 4;Equipe 10;15;15;0;6446;
+mutirao;MT04901003;Área 4;Equipe 10;10;10;0;5041;
+mutirao;MT04901004;Área 4;Equipe 10;19;19;0;5706;
+mutirao;MT04901005;Área 4;Equipe 10;31;31;0;6548;
+mutirao;MT04901006;Área 4;Equipe 10;46;46;0;4433;
+mutirao;MT04901007;Área 4;Equipe 10;29;29;0;5057;
+mutirao;MT04901008;Área 4;Equipe 10;26;26;0;4973;
+mutirao;MT04901009;Área 4;Equipe 10;14;13;1;5237;Travessa E
+mutirao;MT04901010;Área 4;Equipe 10;19;19;0;4288;
+mutirao;MT04901011;Área 4;Equipe 10;22;22;0;4811;
+mutirao;MT04901012;Área 4;Equipe 10;28;27;1;4633;Rua Sem Nome (entre R. Edmilson Rodrigues x Pass. Felicidade, alt. do
+mutirao;MT04901013;Área 4;Equipe 10;19;19;0;5179;
+mutirao;MT04901014;Área 4;Equipe 10;28;27;1;6408;Passagem (Rua Esmaelino)
+mutirao;MT04901015;Área 4;Equipe 10;20;19;1;4413;Rua Sem Nome (entre R. Raimundo Kataki x R. Paulo Fonteles, alt. do
+mutirao;MT04901016;Área 4;Equipe 10;15;15;0;4994;
+mutirao;MT04901017;Área 4;Equipe 10;17;17;0;4932;
+mutirao;MT04901018;Área 4;Equipe 10;18;18;0;3922;
+mutirao;MT05201101;Área 5;Equipe 11;5;5;0;5585;
+mutirao;MT05201102;Área 5;Equipe 11;10;10;0;3940;
+mutirao;MT05201103;Área 5;Equipe 11;3;3;0;4949;
+mutirao;MT05201104;Área 5;Equipe 11;4;4;0;1772;
+mutirao;MT05601201;Área 5;Equipe 12;25;25;0;3992;
+mutirao;MT05601202;Área 5;Equipe 12;21;20;1;5427;Rua Sem Nome (acesso pela Rod. Mário Covas, Ref.: Lanchonete 'Casa
+mutirao;MT05601203;Área 5;Equipe 12;14;14;0;4707;
+mutirao;MT05601204;Área 5;Equipe 12;23;23;0;4242;
+mutirao;MT05601205;Área 5;Equipe 12;14;14;0;5274;
+mutirao;MT05601206;Área 5;Equipe 12;17;17;0;4210;
+mutirao;MT05601207;Área 5;Equipe 12;12;12;0;4103;
+mutirao;MT05601208;Área 5;Equipe 12;13;13;0;4224;
+mutirao;MT05601209;Área 5;Equipe 12;11;11;0;4247;
+mutirao;MT05601210;Área 5;Equipe 12;15;15;0;4899;
+mutirao;MT05601211;Área 5;Equipe 12;14;14;0;4730;
+mutirao;MT05601212;Área 5;Equipe 12;17;17;0;6238;
+mutirao;MT05901301;Área 5;Equipe 13;21;21;0;6900;
+mutirao;MT05901302;Área 5;Equipe 13;23;23;0;5706;
+mutirao;MT05901303;Área 5;Equipe 13;23;23;0;6229;
+mutirao;MT05901304;Área 5;Equipe 13;26;26;0;6771;
+mutirao;MT05901305;Área 5;Equipe 13;24;24;0;5144;
+mutirao;MT05901306;Área 5;Equipe 13;23;23;0;5038;
+mutirao;MT05901307;Área 5;Equipe 13;22;22;0;5329;
+mutirao;MT05901308;Área 5;Equipe 13;16;16;0;4469;
+mutirao;MT05901309;Área 5;Equipe 13;19;19;0;5247;
+mutirao;MT05901310;Área 5;Equipe 13;18;18;0;4762;
+mutirao;MT05901311;Área 5;Equipe 13;23;23;0;5686;
+mutirao;MT05901312;Área 5;Equipe 13;23;23;0;6868;
+mutirao;MT05901313;Área 5;Equipe 13;19;19;0;5872;
+mutirao;MT05901314;Área 5;Equipe 13;24;24;0;5171;
+mutirao;MT05901315;Área 5;Equipe 13;29;29;0;5932;
+mutirao;MT05901316;Área 5;Equipe 13;19;19;0;5413;
+mutirao;MT05901317;Área 5;Equipe 13;17;17;0;5494;
+mutirao;MT05901318;Área 5;Equipe 13;17;17;0;4265;
+mutirao;MT06201401;Área 6;Equipe 14;2;2;0;4734;
+mutirao;MT06201402;Área 6;Equipe 14;3;3;0;4847;
+mutirao;MT06201403;Área 6;Equipe 14;5;5;0;6411;
+mutirao;MT06201404;Área 6;Equipe 14;10;10;0;4122;
+mutirao;MT06251501;Área 6;Equipe 15;7;7;0;4370;
+mutirao;MT06251502;Área 6;Equipe 15;8;8;0;4155;
+mutirao;MT06251503;Área 6;Equipe 15;12;12;0;3708;
+mutirao;MT06251504;Área 6;Equipe 15;11;11;0;3663;
+mutirao;MT06251505;Área 6;Equipe 15;6;6;0;4603;
+mutirao;MT06601601;Área 6;Equipe 16;22;22;0;5457;
+mutirao;MT06601602;Área 6;Equipe 16;21;21;0;4731;
+mutirao;MT06601603;Área 6;Equipe 16;20;20;0;5177;
+mutirao;MT06601604;Área 6;Equipe 16;39;39;0;4282;
+mutirao;MT06601605;Área 6;Equipe 16;19;19;0;4701;
+mutirao;MT06601606;Área 6;Equipe 16;17;17;0;4588;
+mutirao;MT06601607;Área 6;Equipe 16;14;14;0;6476;
+mutirao;MT06601608;Área 6;Equipe 16;9;9;0;3117;
+mutirao;MT06601609;Área 6;Equipe 16;15;15;0;4756;
+mutirao;MT06601610;Área 6;Equipe 16;22;22;0;4079;
+mutirao;MT06601611;Área 6;Equipe 16;27;27;0;4783;
+mutirao;MT06601612;Área 6;Equipe 16;30;28;2;5308;"Rua E; Rua H"
+mutirao;MT06901701;Área 6;Equipe 17;17;15;2;3724;"Rua E; Rua H"
+mutirao;MT06901702;Área 6;Equipe 17;29;29;0;4291;
+mutirao;MT06901703;Área 6;Equipe 17;21;21;0;4250;
+mutirao;MT06901704;Área 6;Equipe 17;27;27;0;5150;
+mutirao;MT06901705;Área 6;Equipe 17;22;21;1;5572;Rua E
+mutirao;MT06901706;Área 6;Equipe 17;25;25;0;5071;
+mutirao;MT06901707;Área 6;Equipe 17;26;26;0;4916;
+mutirao;MT06901708;Área 6;Equipe 17;19;17;2;6230;"Travessa E; Travessa H"
+mutirao;MT06901709;Área 6;Equipe 17;35;35;0;4522;
+mutirao;MT06901710;Área 6;Equipe 17;35;34;1;5137;Passagem (em Travessa SN-4)
+mutirao;MT06901711;Área 6;Equipe 17;24;24;0;4137;
+mutirao;MT06901712;Área 6;Equipe 17;18;18;0;4109;
+mutirao;MT06901713;Área 6;Equipe 17;13;13;0;4446;
+mutirao;MT06901714;Área 6;Equipe 17;10;10;0;4720;
+mutirao;MT06901715;Área 6;Equipe 17;18;18;0;5366;
+mutirao;MT06901716;Área 6;Equipe 17;20;20;0;4512;
+mutirao;MT06901717;Área 6;Equipe 17;19;18;1;4522;Rua Sem Nome (Entre Avenida Almirante Barroso e Avenida Almirante
+mutirao;MT06901718;Área 6;Equipe 17;18;15;3;2165;"Travessa E; Travessa E; Travessa E"
+mutirao;MT07201801;Área 7;Equipe 18;14;14;0;6008;
+mutirao;MT07201802;Área 7;Equipe 18;20;20;0;5103;
+mutirao;MT07201803;Área 7;Equipe 18;14;14;0;5018;
+mutirao;MT07201804;Área 7;Equipe 18;16;16;0;6691;
+mutirao;MT07201901;Área 7;Equipe 19;9;9;0;7369;
+mutirao;MT07201902;Área 7;Equipe 19;4;4;0;5141;
+mutirao;MT07201903;Área 7;Equipe 19;4;4;0;5201;
+mutirao;MT07201904;Área 7;Equipe 19;8;8;0;8422;
+mutirao;MT07202001;Área 7;Equipe 20;17;17;0;6376;
+mutirao;MT07202002;Área 7;Equipe 20;9;9;0;5164;
+mutirao;MT07202003;Área 7;Equipe 20;5;5;0;5210;
+mutirao;MT07202004;Área 7;Equipe 20;5;5;0;2822;
+mutirao;MT07302101;Área 7;Equipe 21;11;11;0;10474;
+mutirao;MT07302102;Área 7;Equipe 21;11;11;0;5085;
+mutirao;MT07302103;Área 7;Equipe 21;16;16;0;5256;
+mutirao;MT07302104;Área 7;Equipe 21;6;6;0;3312;
+mutirao;MT07302105;Área 7;Equipe 21;18;18;0;7859;
+mutirao;MT07302106;Área 7;Equipe 21;9;9;0;5358;
+mutirao;MT07302201;Área 7;Equipe 22;11;11;0;5031;
+mutirao;MT07302202;Área 7;Equipe 22;14;14;0;5708;
+mutirao;MT07302203;Área 7;Equipe 22;9;9;0;5535;
+mutirao;MT07302204;Área 7;Equipe 22;13;13;0;6562;
+mutirao;MT07302205;Área 7;Equipe 22;10;10;0;5382;
+mutirao;MT07302206;Área 7;Equipe 22;14;14;0;6457;
+mutirao;MT07452301;Área 7;Equipe 23;9;9;0;3474;
+mutirao;MT07452302;Área 7;Equipe 23;11;11;0;5684;
+mutirao;MT07452303;Área 7;Equipe 23;24;24;0;4819;
+mutirao;MT07452304;Área 7;Equipe 23;24;24;0;5176;
+mutirao;MT07452305;Área 7;Equipe 23;34;34;0;5220;
+mutirao;MT07452306;Área 7;Equipe 23;29;29;0;5334;
+mutirao;MT07452307;Área 7;Equipe 23;32;32;0;6150;
+mutirao;MT07452308;Área 7;Equipe 23;22;22;0;7748;
+mutirao;MT07452309;Área 7;Equipe 23;24;24;0;5415;
+mutirao;MT07902401;Área 7;Equipe 24;18;18;0;4951;
+mutirao;MT07902402;Área 7;Equipe 24;24;24;0;5084;
+mutirao;MT07902403;Área 7;Equipe 24;28;28;0;4441;
+mutirao;MT07902404;Área 7;Equipe 24;24;24;0;4034;
+mutirao;MT07902405;Área 7;Equipe 24;19;19;0;4648;
+mutirao;MT07902406;Área 7;Equipe 24;30;30;0;6657;
+mutirao;MT07902407;Área 7;Equipe 24;31;31;0;4874;
+mutirao;MT07902408;Área 7;Equipe 24;18;18;0;4334;
+mutirao;MT07902409;Área 7;Equipe 24;33;30;3;5236;"Rua Sem Nome (Entre Passagem Cameta e Rua Professor Nelson Ribe; Rua Sem Nome (Entre Passagem Praina e R Sem Nome (Entre R Prof N; Rua Sem Nome (Entre Rua Professor Nelson Ribeiro e Travessa Corone"
+mutirao;MT07902410;Área 7;Equipe 24;22;22;0;4836;
+mutirao;MT07902411;Área 7;Equipe 24;30;29;1;5926;Rua Sem Nome (Entre Passagem Mena Barreto e Rua Sem Nome 2 (A
+mutirao;MT07902412;Área 7;Equipe 24;22;22;0;7481;
+mutirao;MT07902413;Área 7;Equipe 24;23;23;0;4158;
+mutirao;MT07902414;Área 7;Equipe 24;24;24;0;6184;
+mutirao;MT07902415;Área 7;Equipe 24;17;17;0;4965;
+mutirao;MT07902416;Área 7;Equipe 24;22;22;0;4946;
+mutirao;MT07902417;Área 7;Equipe 24;21;21;0;4552;
+mutirao;MT07902418;Área 7;Equipe 24;28;28;0;4774;
+mutirao;MT08202501;Área 8;Equipe 25;12;12;0;7123;
+mutirao;MT08202502;Área 8;Equipe 25;19;19;0;5211;
+mutirao;MT08202503;Área 8;Equipe 25;9;9;0;10187;
+mutirao;MT08202504;Área 8;Equipe 25;10;10;0;5056;
+mutirao;MT08252601;Área 8;Equipe 26;13;13;0;5258;
+mutirao;MT08252602;Área 8;Equipe 26;9;9;0;4854;
+mutirao;MT08252603;Área 8;Equipe 26;8;8;0;7047;
+mutirao;MT08252604;Área 8;Equipe 26;10;10;0;7569;
+mutirao;MT08252605;Área 8;Equipe 26;16;16;0;5477;
+mutirao;MT08302701;Área 8;Equipe 27;11;11;0;10885;
+mutirao;MT08302702;Área 8;Equipe 27;7;7;0;7269;
+mutirao;MT08302703;Área 8;Equipe 27;7;7;0;6943;
+mutirao;MT08302704;Área 8;Equipe 27;11;11;0;6859;
+mutirao;MT08302705;Área 8;Equipe 27;10;10;0;5321;
+mutirao;MT08302706;Área 8;Equipe 27;16;16;0;4766;
+mutirao;MT08902801;Área 8;Equipe 28;29;29;0;7345;
+mutirao;MT08902802;Área 8;Equipe 28;38;38;0;8460;
+mutirao;MT08902803;Área 8;Equipe 28;30;30;0;6621;
+mutirao;MT08902804;Área 8;Equipe 28;24;24;0;5511;
+mutirao;MT08902805;Área 8;Equipe 28;23;23;0;6411;
+mutirao;MT08902806;Área 8;Equipe 28;36;36;0;4822;
+mutirao;MT08902807;Área 8;Equipe 28;23;23;0;4317;
+mutirao;MT08902808;Área 8;Equipe 28;28;28;0;5822;
+mutirao;MT08902809;Área 8;Equipe 28;18;18;0;6386;
+mutirao;MT08902810;Área 8;Equipe 28;25;25;0;6594;
+mutirao;MT08902811;Área 8;Equipe 28;13;13;0;5023;
+mutirao;MT08902812;Área 8;Equipe 28;30;30;0;7380;
+mutirao;MT08902813;Área 8;Equipe 28;25;25;0;8526;
+mutirao;MT08902814;Área 8;Equipe 28;28;28;0;6793;
+mutirao;MT08902815;Área 8;Equipe 28;34;34;0;4907;
+mutirao;MT08902816;Área 8;Equipe 28;22;22;0;6233;
+mutirao;MT08902817;Área 8;Equipe 28;30;30;0;6756;
+mutirao;MT09252901;Área 9;Equipe 29;12;12;0;8699;
+mutirao;MT09252902;Área 9;Equipe 29;22;20;2;4511;"Rua Sem Nome 1 (Entre Alameda Dinan Coelho e Alameda Coronel Er; Rua Sem Nome 2 (Entre Alameda Dinan Coelho e Alameda Coronel Er"
+mutirao;MT09252903;Área 9;Equipe 29;12;12;0;4584;
+mutirao;MT09252904;Área 9;Equipe 29;11;11;0;4428;
+mutirao;MT09252905;Área 9;Equipe 29;11;11;0;4995;
+mutirao;MT09903001;Área 9;Equipe 30;20;20;0;4774;
+mutirao;MT09903002;Área 9;Equipe 30;24;23;1;4512;Rua Sem Nome (Entre Passagem Coronel Moisés e Passagem Ana Deu
+mutirao;MT09903003;Área 9;Equipe 30;18;18;0;4641;
+mutirao;MT09903004;Área 9;Equipe 30;26;26;0;4791;
+mutirao;MT09903005;Área 9;Equipe 30;29;29;0;5355;
+mutirao;MT09903006;Área 9;Equipe 30;13;13;0;4771;
+mutirao;MT09903007;Área 9;Equipe 30;21;21;0;4250;
+mutirao;MT09903008;Área 9;Equipe 30;17;17;0;6775;
+mutirao;MT09903009;Área 9;Equipe 30;18;18;0;4775;
+mutirao;MT09903010;Área 9;Equipe 30;14;14;0;4748;
+mutirao;MT09903011;Área 9;Equipe 30;30;30;0;4782;
+mutirao;MT09903012;Área 9;Equipe 30;28;23;5;3723;"Quadra Três; Rua F; Travessa 1; Travessa 2; Travessa 3"
+mutirao;MT09903013;Área 9;Equipe 30;5;5;0;2539;
+mutirao;MT09903014;Área 9;Equipe 30;15;15;0;4648;
+mutirao;MT09903015;Área 9;Equipe 30;20;20;0;4589;
+mutirao;MT09903016;Área 9;Equipe 30;7;7;0;5687;
+mutirao;MT09903017;Área 9;Equipe 30;15;15;0;4532;
+mutirao;MT09903018;Área 9;Equipe 30;18;18;0;4761;
+mutirao;MT10253101;Área 10;Equipe 31;8;8;0;5792;
+mutirao;MT10253102;Área 10;Equipe 31;6;6;0;8718;
+mutirao;MT10253103;Área 10;Equipe 31;3;3;0;7953;
+mutirao;MT10253104;Área 10;Equipe 31;4;4;0;5262;
+mutirao;MT10253105;Área 10;Equipe 31;2;2;0;4569;
+mutirao;MT10303201;Área 10;Equipe 32;4;4;0;3197;
+mutirao;MT10303202;Área 10;Equipe 32;4;4;0;4772;
+mutirao;MT10303203;Área 10;Equipe 32;8;8;0;2744;
+mutirao;MT10303204;Área 10;Equipe 32;10;10;0;3948;
+mutirao;MT10303205;Área 10;Equipe 32;10;10;0;4943;
+mutirao;MT10303206;Área 10;Equipe 32;2;2;0;4090;
+mutirao;MT10303301;Área 10;Equipe 33;13;13;0;5014;
+mutirao;MT10303302;Área 10;Equipe 33;12;12;0;6305;
+mutirao;MT10303303;Área 10;Equipe 33;5;5;0;4889;
+mutirao;MT10303304;Área 10;Equipe 33;10;10;0;7011;
+mutirao;MT10303305;Área 10;Equipe 33;4;4;0;5704;
+mutirao;MT10303306;Área 10;Equipe 33;7;7;0;1795;
+mutirao;MT10603401;Área 10;Equipe 34;24;24;0;7117;
+mutirao;MT10603402;Área 10;Equipe 34;25;25;0;7565;
+mutirao;MT10603403;Área 10;Equipe 34;23;23;0;5140;
+mutirao;MT10603404;Área 10;Equipe 34;18;16;2;7976;"Passagem E; Passagem E"
+mutirao;MT10603405;Área 10;Equipe 34;16;15;1;3371;Passagem E
+mutirao;MT10603406;Área 10;Equipe 34;31;31;0;5582;
+mutirao;MT10603407;Área 10;Equipe 34;21;21;0;6056;
+mutirao;MT10603408;Área 10;Equipe 34;19;19;0;8408;
+mutirao;MT10603409;Área 10;Equipe 34;17;17;0;8018;
+mutirao;MT10603410;Área 10;Equipe 34;25;25;0;9505;
+mutirao;MT10603411;Área 10;Equipe 34;29;29;0;5665;
+mutirao;MT10603412;Área 10;Equipe 34;10;10;0;3718;
+mutirao;MTAV300101;Área 999;Equipe 1;1;1;0;1015;
+mutirao;MTAV300103;Área 999;Equipe 1;1;1;0;1136;
+mutirao;MTAV300501;Área 999;Equipe 5;3;3;0;6000;
+mutirao;MTAV301101;Área 999;Equipe 11;12;12;0;11801;
+mutirao;MTAV301301;Área 999;Equipe 13;5;5;0;7484;
+mutirao;MTAV301402;Área 999;Equipe 14;2;2;0;29641;
+mutirao;MTAV301403;Área 999;Equipe 14;16;7;9;14271;"Acesso (P/ Avenida Almirante Barroso); Acesso (P/ Avenida Júlio César); Acesso (P/ Avenida Pedro Álvares Cabral); Acesso (P/ Elevado Coronel Fontoura); Acesso (P/ Elevado Coronel Fontoura); Acesso (P/ Rodovia Augusto Montenegro); Elevado Coronel Fontoura; Elevado Coronel Fontoura; Rodovia BR-316"
+mutirao;MTAV301404;Área 999;Equipe 14;4;4;0;9754;
+mutirao;MTAV301502;Área 999;Equipe 15;3;2;1;29641;Acesso (P/ Rodovia Augusto Montenegro)
+mutirao;MTAV301503;Área 999;Equipe 14;6;5;1;14690;Rodovia Arthur Bernardes
+mutirao;MTAV301504;Área 999;Equipe 15;2;2;0;9602;

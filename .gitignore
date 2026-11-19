@@ -1,0 +1,7 @@
+# PDFs de origem: grandes demais para o GitHub (o de Mutirão passa de 100 MB)
+*.pdf
+
+# arquivos locais
+.claude/
+__pycache__/
+*.pyc

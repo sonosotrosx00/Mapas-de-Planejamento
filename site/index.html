@@ -1,0 +1,1354 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mapas do Planejamento — Belém Limpa</title>
+<meta name="description" content="Mapas de Coleta Domiciliar e Mutirão — Belém Limpa">
+<meta name="theme-color" content="#ffffff">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icones/favicon-64.png">
+<link rel="apple-touch-icon" href="icones/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mapas BL">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>
+  // Aplica o tema salvo antes de desenhar a página (evita piscar)
+  try { var t = localStorage.getItem("tema"); if (t === "claro" || t === "escuro") document.documentElement.dataset.tema = t; } catch (e) {}
+</script>
+<style>
+  /* Cores: fundo neutro levemente azulado; verde da folha da logo nos ícones e botões */
+  :root {
+    --verde: #5f9e00;          /* ícones, setas e destaques */
+    --verde-claro: #eef7e0;    /* fundo dos ícones */
+    --botao: #6db100;          /* botões principais e itens selecionados */
+    --azul: #0777bc;
+    --fundo: #f5f7f9;
+    --cartao: #ffffff;
+    --cartao-2: #f7f9fb;
+    --texto: #1b2a3a;
+    --suave: #687584;
+    --linha: #e3e8ee;
+    --titulo: #1b2a3a;
+    --off: #ffffff;
+    --off-txt: #9aa5b1;
+    --off-ic: #f0f2f4;
+    --destaque: #fff1b8;
+    --foco: #6db100;
+    --sombra: 0 1px 2px rgba(16, 24, 40, .04);
+    --raio: 16px;
+    color-scheme: light;
+  }
+  :root[data-tema="escuro"] {
+    --verde: #9ad32c;
+    --verde-claro: rgba(123, 193, 1, .14);
+    --botao: #5f9e00;
+    --fundo: #10151b;
+    --cartao: #161c23;
+    --cartao-2: #1b222b;
+    --texto: #e6ebf0;
+    --suave: #98a3b0;
+    --linha: #232b35;
+    --titulo: #e6ebf0;
+    --off: #161c23;
+    --off-txt: #5f6b78;
+    --off-ic: #1d242c;
+    --destaque: #4b4416;
+    --foco: #9ad32c;
+    --sombra: none;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-tema="claro"]) {
+      --verde: #9ad32c;
+      --verde-claro: rgba(123, 193, 1, .14);
+      --botao: #5f9e00;
+      --fundo: #10151b;
+      --cartao: #161c23;
+      --cartao-2: #1b222b;
+      --texto: #e6ebf0;
+      --suave: #98a3b0;
+      --linha: #232b35;
+      --titulo: #e6ebf0;
+      --off: #161c23;
+      --off-txt: #5f6b78;
+      --off-ic: #1d242c;
+      --destaque: #4b4416;
+      --foco: #9ad32c;
+      --sombra: none;
+      color-scheme: dark;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 16px; line-height: 1.4;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
+  }
+  button, input { font: inherit; color: inherit; }
+  svg { flex: 0 0 auto; }
+
+  /* Logos têm fundo branco: no tema escuro ficam sobre um cartão branco */
+  .logo-wrap { display: inline-block; border-radius: 12px; }
+  .logo-wrap img { display: block; mix-blend-mode: multiply; }
+  :root[data-tema="escuro"] .logo-wrap { background: #fff; }
+  @media (prefers-color-scheme: dark) { :root:not([data-tema="claro"]) .logo-wrap { background: #fff; } }
+
+  /* ---------- Topo ---------- */
+  .topo {
+    position: sticky; top: 0; z-index: 20;
+    padding: calc(env(safe-area-inset-top) + 10px) 16px 10px;
+    display: flex; align-items: center; gap: 12px; min-height: 64px;
+  }
+  .topo { background: var(--cartao); border-bottom: 1px solid var(--linha); }
+  .ib {
+    height: 42px; min-width: 42px; padding: 0 10px; flex: 0 0 auto;
+    border: 1px solid var(--linha); border-radius: 12px; background: var(--cartao);
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer;
+    font-size: 14px; font-weight: 700;
+  }
+  .voltar { display: none !important; }
+  .em-pagina .voltar { display: inline-flex !important; }
+  .selo { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 10px; padding: 5px 10px; cursor: pointer; min-width: 0; }
+  .selo img { height: 30px; width: auto; mix-blend-mode: normal; }
+  @media (max-width: 599px) { .topo .titulo { display: none; } }
+  @media (max-width: 360px) { .selo img { height: 24px; } .selo { gap: 8px; } }
+  .topo .titulo { font-weight: 800; font-size: 16px; color: var(--titulo); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .topo .dir { margin-left: auto; display: flex; gap: 8px; position: relative; }
+  #btnInstalar { display: none; }
+  #btnInstalar.on { display: inline-flex; }
+
+  .menu-tema {
+    position: absolute; right: 0; top: 50px; z-index: 30;
+    background: var(--cartao); border: 1px solid var(--linha); border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.18); padding: 6px; min-width: 170px; display: none;
+  }
+  .menu-tema.on { display: block; }
+  .menu-tema button {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    padding: 10px 12px; border: 0; background: none; border-radius: 10px; cursor: pointer; text-align: left;
+  }
+  .menu-tema button:hover { background: var(--cartao-2); }
+  .menu-tema button[aria-checked="true"] { font-weight: 700; color: var(--foco); }
+
+  main { width: 100%; max-width: 1280px; margin: 0 auto; padding: 8px 16px 24px; flex: 1; }
+
+  /* ---------- Início ---------- */
+  .inicio { max-width: 560px; margin: 0 auto; }
+  .marca-grande { display: block; width: fit-content; margin: 4px auto 10px; padding: 6px 12px; border-radius: 18px; }
+  .marca-grande img { width: min(300px, 74vw); height: auto; }
+  .inicio h1 { text-align: center; font-size: 20px; margin: 18px 0 22px; color: var(--titulo); }
+  .operacoes { display: grid; gap: 14px; }
+  .op {
+    display: flex; align-items: center; gap: 16px;
+    width: 100%; height: 96px; padding: 0 18px;
+    border: 1px solid var(--linha); border-radius: var(--raio);
+    background: var(--cartao); color: var(--texto); text-align: left; cursor: pointer;
+    box-shadow: var(--sombra);
+  }
+  .op:active { transform: scale(.985); }
+  @media (hover: hover) { .op:not([disabled]):hover { border-color: var(--verde); } }
+  .op .ic { width: 56px; height: 56px; flex: 0 0 56px; border-radius: 14px; background: var(--verde-claro); color: var(--verde); display: flex; align-items: center; justify-content: center; }
+  .op .nome { font-size: 21px; font-weight: 800; display: block; }
+  .op .qtd { font-size: 14px; color: var(--suave); display: block; min-height: 20px; }
+  .op .seta { margin-left: auto; color: var(--verde); }
+  .op .qtd:empty { display: none; }
+  .op[disabled] { background: var(--off); color: var(--off-txt); box-shadow: none; cursor: default; opacity: .7; }
+  .op[disabled] .ic { background: var(--off-ic); color: var(--off-txt); }
+
+  /* ---------- Rodapé ---------- */
+  .rodape { padding: 8px 16px calc(env(safe-area-inset-bottom) + 16px); }
+  .rodape .faixa {
+    max-width: 560px; margin: 0 auto; background: #fff; border: 1px solid var(--linha); border-radius: var(--raio);
+    padding: 12px; display: flex; align-items: center; justify-content: center;
+  }
+  .rodape img { height: 48px; width: auto; display: block; }
+  .em-pagina .rodape .faixa { max-width: 1248px; padding: 8px; }
+  .em-pagina .rodape img { height: 38px; }
+
+  /* ---------- Operação ---------- */
+  .cab-op { display: flex; align-items: center; gap: 12px; margin: 6px 0 12px; }
+  .cab-op .ic { width: 48px; height: 48px; border-radius: 13px; background: var(--verde-claro); color: var(--verde); display: flex; align-items: center; justify-content: center; flex: 0 0 48px; }
+  .cab-op h2 { margin: 0; font-size: 21px; color: var(--titulo); }
+  .cab-op p { margin: 0; color: var(--suave); font-size: 13px; }
+  .busca-wrap { position: relative; margin-bottom: 6px; }
+  .busca-wrap svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--suave); pointer-events: none; }
+  .busca {
+    width: 100%; padding: 13px 14px 13px 42px; font-size: 16px;
+    border: 1px solid var(--linha); border-radius: 14px; background: var(--cartao);
+  }
+  .busca:focus { outline: 2px solid var(--foco); outline-offset: 1px; }
+  .dica { font-size: 12px; color: var(--suave); margin: 0 2px 12px; }
+  .lista { display: grid; gap: 8px; }
+  .item {
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    padding: 13px 14px; border: 1px solid var(--linha); border-radius: 14px;
+    background: var(--cartao); text-align: left; cursor: pointer;
+  }
+  .item.ativo { border-color: var(--foco); box-shadow: 0 0 0 2px var(--foco) inset; }
+  .item .setor { font-weight: 800; font-size: 16px; color: var(--titulo); }
+  .item .resumo { font-size: 13px; color: var(--suave); }
+  .item .achou { font-size: 13px; margin-top: 3px; }
+  .item .achou mark { background: var(--destaque); color: inherit; border-radius: 3px; padding: 0 2px; }
+  .item .seta { margin-left: auto; color: var(--suave); }
+  .vazio { color: var(--suave); padding: 16px 4px; }
+
+  .area { border: 1px solid var(--linha); border-radius: 14px; background: var(--cartao); overflow: hidden; }
+  .area > button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 14px; border: 0; background: none; cursor: pointer; text-align: left; }
+  .area .nome-area { font-weight: 800; font-size: 16px; color: var(--titulo); }
+  .area .qtd-area { font-size: 13px; color: var(--suave); }
+  .area .chev { margin-left: auto; color: var(--suave); transition: transform .15s; }
+  .area.aberta .chev { transform: rotate(90deg); }
+  .area .sub { display: none; padding: 0 8px 8px; gap: 6px; }
+  .area.aberta .sub { display: grid; }
+  .area .item { background: var(--cartao-2); border-color: transparent; }
+  .area .item.ativo { border-color: var(--foco); }
+
+  /* ---------- Detalhe ---------- */
+  .detalhe .cab h2 { margin: 0 0 12px; font-size: 23px; color: var(--titulo); }
+  .info {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 0 0 14px;
+    background: var(--linha); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden;
+  }
+  .info div { background: var(--cartao); padding: 10px 12px; }
+  .info .largo { grid-column: 1 / -1; }
+  .info dt { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--suave); font-weight: 700; }
+  .info dd { margin: 2px 0 0; font-weight: 700; font-size: 15px; }
+
+  .bloco { background: var(--cartao); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden; margin-bottom: 14px; }
+  .bloco h3 { margin: 0; padding: 12px 14px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--suave); border-bottom: 1px solid var(--linha); }
+  .mapa-mini { display: block; width: 100%; padding: 0; border: 0; background: #f2f4f6; cursor: zoom-in; aspect-ratio: 842 / 595; }
+  .mapa-mini img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .acoes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px; }
+  .btn {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    min-height: 68px; padding: 10px 6px; border-radius: 12px; border: 1px solid var(--linha);
+    background: var(--cartao-2); color: var(--texto); font-weight: 600; font-size: 14px; line-height: 1.15;
+    text-align: center; text-decoration: none; cursor: pointer;
+  }
+  .btn svg { width: 22px; height: 22px; }
+  .btn.pri { background: var(--botao); border-color: var(--botao); color: #fff; font-weight: 700; }
+  .btn[aria-busy="true"] { opacity: .6; pointer-events: none; }
+  .btn-linha { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 12px; border-radius: 12px;
+    border: 1px dashed var(--linha); background: none; color: var(--titulo); font-weight: 700; font-size: 14px; cursor: pointer; }
+  .btn-linha.ok { border-style: solid; color: var(--suave); cursor: default; }
+  .btn-linha[aria-busy="true"] { opacity: .7; pointer-events: none; }
+  .salvar { margin-bottom: 8px; }
+  .area .salvar { margin: 0 0 4px; }
+
+  /* Extras: botões da lista, aviso "setores aqui", mapa com GPS */
+  .extras { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 12px; }
+  .chip-btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 12px; border-radius: 999px;
+    border: 1px solid var(--linha); background: var(--cartao); color: var(--texto); font-weight: 600; font-size: 14px; cursor: pointer; }
+  .chip-btn.on { background: var(--botao); border-color: var(--botao); color: #fff; }
+  .chip-btn[aria-busy="true"] { opacity: .7; pointer-events: none; }
+  .aviso-aqui { font-size: 13px; color: var(--suave); padding: 2px 4px 6px; }
+  .mapa-gps { position: fixed; inset: 0; z-index: 110; background: #10161d; display: flex; flex-direction: column; }
+  .mapa-gps[hidden] { display: none; }
+  .mapa-gps .barra { display: flex; align-items: center; gap: 8px; padding: calc(env(safe-area-inset-top) + 8px) 10px 8px; color: #fff; }
+  .mapa-gps .barra .nome { font-weight: 700; margin-right: auto; }
+  .mapa-gps .vb { height: 42px; min-width: 42px; padding: 0 12px; border-radius: 21px; border: 0; background: rgba(255,255,255,.16);
+    color: #fff; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; }
+  .mapa-gps .vb.on { background: #1b75bc; }
+  .mapa-gps .vb.so-ic { padding: 0; }
+  #mapaGpsCaixa { flex: 1; background: #e9edf2; }
+  .mapa-gps .aviso { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,.7); color: #fff;
+    padding: 10px 14px; border-radius: 10px; font-size: 14px; z-index: 500; text-align: center; }
+
+  /* Voltar ao topo */
+  .topo-btn {
+    position: fixed; right: 16px; bottom: calc(env(safe-area-inset-bottom) + 18px); z-index: 30;
+    width: 48px; height: 48px; border-radius: 24px; border: 1px solid rgba(255,255,255,.3); background: var(--botao); color: #fff;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0,0,0,.25); opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .2s, transform .2s;
+  }
+  .topo-btn.on { opacity: 1; transform: none; pointer-events: auto; }
+
+  table.vias { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.vias th { text-align: left; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--suave); padding: 8px 12px; background: var(--cartao-2); border-bottom: 1px solid var(--linha); }
+  table.vias td { padding: 9px 12px; border-bottom: 1px solid var(--linha); vertical-align: top; }
+  table.vias tr:last-child td { border-bottom: 0; }
+  table.vias td:first-child { font-weight: 700; }
+  table.vias tr.marcada td { background: var(--destaque); }
+  @media (max-width: 640px) {
+    table.vias thead { display: none; }
+    table.vias, table.vias tbody, table.vias tr, table.vias td { display: block; width: 100%; }
+    table.vias tr { padding: 10px 14px; border-bottom: 1px solid var(--linha); }
+    table.vias tr:last-child { border-bottom: 0; }
+    table.vias tr.marcada { background: var(--destaque); }
+    table.vias tr.marcada td { background: none; }
+    table.vias td { padding: 0; border: 0; }
+    table.vias td:first-child { font-size: 15px; margin-bottom: 2px; }
+    table.vias td:not(:first-child) { font-size: 13px; color: var(--suave); }
+    table.vias td:not(:first-child)::before { content: attr(data-r) ": "; font-weight: 700; }
+  }
+
+  @media (min-width: 900px) {
+    .topo { padding-left: 24px; padding-right: 24px; }
+    .selo img { height: 36px; }
+    main { padding: 16px 24px 24px; }
+    .inicio { max-width: 960px; }
+    .marca-grande img { width: 340px; }
+    .inicio h1 { font-size: 24px; margin-bottom: 30px; }
+    .operacoes { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .op { flex-direction: column; align-items: flex-start; height: 230px; padding: 26px 24px; }
+    .op .ic { width: 64px; height: 64px; }
+    .op .seta { margin-left: 0; margin-top: auto; }
+    .rodape .faixa { max-width: 960px; }
+    .layout { display: grid; grid-template-columns: 360px 1fr; gap: 24px; align-items: start; }
+    .col-lista { position: sticky; top: 84px; max-height: calc(100vh - 104px); display: flex; flex-direction: column; }
+    .col-lista .lista { overflow-y: auto; padding: 2px 4px 2px 2px; display: flex; flex-direction: column; }
+    .col-lista .lista > * { flex-shrink: 0; }
+    .detalhe .placeholder { color: var(--suave); padding: 48px; text-align: center; border: 1px dashed var(--linha); border-radius: 14px; }
+    .info { grid-template-columns: repeat(4, 1fr); }
+    .info .d2 { grid-column: span 2; }
+    .info .d3 { grid-column: span 3; }
+    .info .d4 { grid-column: 1 / -1; }
+  }
+  @media (max-width: 899px) {
+    .info .m2 { grid-column: 1 / -1; }
+    .layout.com-detalhe .col-lista { display: none; }
+    .layout:not(.com-detalhe) .detalhe { display: none; }
+  }
+
+  /* ---------- Visor de mapa em tela cheia ---------- */
+  .visor { position: fixed; inset: 0; z-index: 100; background: #10161d; display: none; touch-action: none; }
+  .visor.on { display: block; }
+  .visor .palco { position: absolute; inset: 0; overflow: hidden; }
+  .visor img { position: absolute; left: 0; top: 0; transform-origin: 0 0; user-select: none; -webkit-user-drag: none; max-width: none; }
+  .visor .barra {
+    position: absolute; left: 0; right: 0; top: 0;
+    padding: calc(env(safe-area-inset-top) + 10px) 12px 14px;
+    display: flex; gap: 8px; align-items: center;
+    background: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,0)); color: #fff;
+  }
+  .visor .barra .nome { font-weight: 700; margin-right: auto; }
+  .visor .vb {
+    height: 42px; min-width: 42px; padding: 0 12px; border-radius: 21px; border: 0;
+    background: rgba(255,255,255,.18); color: #fff; font-weight: 700; font-size: 14px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer;
+  }
+  .visor .vb.so-ic { padding: 0; }
+  .visor .carregando { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #c9d2e3; }
+
+  /* ---------- Ajustes de acabamento ---------- */
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  :focus-visible { outline: 2px solid var(--foco); outline-offset: 2px; }
+  .op:focus-visible { outline-color: var(--azul-escuro); outline-offset: 3px; }
+  .topo { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  main { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  .item > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+  .mapa-gps .barra .nome, .visor .barra .nome { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mapa-gps .barra, .visor .barra { padding-left: max(10px, env(safe-area-inset-left)); padding-right: max(10px, env(safe-area-inset-right)); }
+  .btn { overflow-wrap: anywhere; hyphens: auto; }
+  .info dd { overflow-wrap: anywhere; }
+  @media (max-width: 440px) {
+    .mapa-gps .vb:not(.so-ic) .rot { display: none; }
+    .mapa-gps .vb:not(.so-ic) { padding: 0; width: 42px; }
+    .btn { font-size: 13px; }
+    .cab-op h2 { font-size: 19px; }
+  }
+  @media (min-width: 600px) and (max-width: 899px) {
+    .layout:not(.com-detalhe) .lista { grid-template-columns: 1fr 1fr; align-items: start; }
+    .layout:not(.com-detalhe) .lista > .aviso-aqui,
+    .layout:not(.com-detalhe) .lista > .salvar,
+    .layout:not(.com-detalhe) .lista > .vazio { grid-column: 1 / -1; }
+    .acoes { grid-template-columns: repeat(4, 1fr); }
+    .layout.com-detalhe .detalhe { max-width: 760px; margin: 0 auto; }
+  }
+  @media (hover: hover) {
+    .item:hover, .area > button:hover { background: var(--cartao-2); }
+    .area .item:hover { background: var(--cartao); }
+    .btn:hover:not(.pri) { border-color: var(--foco); }
+    .btn.pri:hover { filter: brightness(1.15); }
+    .op:hover:not([disabled]) { filter: brightness(1.06); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+  }
+  @media print { .topo, .topo-btn, .rodape, .acoes { display: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <button class="ib voltar" id="voltar" aria-label="Voltar">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <span class="selo" id="selo" role="link" aria-label="Início"><img src="logo_prefeitura.png" alt="Prefeitura de Belém"><img src="logo_belem_limpa.png" alt="Belém Limpa"></span>
+  <div class="titulo" id="titulo"></div>
+  <div class="dir">
+    <button class="ib" id="btnInstalar" aria-label="Instalar"></button>
+    <button class="ib" id="btnTema" aria-label="Tema" aria-haspopup="true" aria-expanded="false"></button>
+    <div class="menu-tema" id="menuTema" role="menu">
+      <button role="menuitemradio" data-tema="sistema"></button>
+      <button role="menuitemradio" data-tema="claro"></button>
+      <button role="menuitemradio" data-tema="escuro"></button>
+    </div>
+  </div>
+</header>
+
+<main id="app"></main>
+
+
+<div class="visor" id="visor" aria-hidden="true">
+  <div class="palco" id="palco"><img id="visorImg" alt=""></div>
+  <div class="carregando" id="carregando">Carregando mapa…</div>
+  <div class="barra">
+    <span class="nome" id="visorNome"></span>
+    <button class="vb" id="visorPdf"></button>
+    <button class="vb" id="visorJpg"></button>
+    <button class="vb so-ic" id="visorFechar" aria-label="Fechar">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="mapa-gps" id="mapaGps" hidden>
+  <div class="barra">
+    <span class="nome" id="mapaGpsNome"></span>
+    <button class="vb" id="mapaGpsLocal" aria-label="Mostrar onde estou">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg><span class="rot">Onde estou</span></button>
+    <button class="vb" id="mapaGpsSat" aria-label="Satélite">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg><span class="rot">Satélite</span></button>
+    <button class="vb so-ic" id="mapaGpsFechar" aria-label="Fechar">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div id="mapaGpsCaixa"></div>
+  <div class="aviso" id="mapaGpsAviso" hidden></div>
+</div>
+
+<button class="topo-btn" id="btnSubir" aria-label="Voltar ao topo"></button>
+
+<script src="versao.js"></script>
+<script src="dados.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Ícones (caminhão e vassoura: IconOven, MIT; demais: Lucide, ISC) ---------- */
+  var IC = {
+    caminhao: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="1.5" d="M8.25 5.25H13q1 0 1 1V8q0 1 1 1h2q1 0 1.68.73l1.89 2.04q.68.73.68 1.73v2.25q0 1-1 1H6.75q-1 0-1-1V13.5q0-1-1-1h-1q-1 0-1-1v-.75q0-1 .71-1.71l3.08-3.08q.71-.71 1.71-.71M14 9v7.75"/><circle cx="8.75" cy="19" r="2.25" stroke-width="1.5"/><path stroke-width="2" d="M8.75 19h.01"/><circle cx="17.75" cy="19" r="2.25" stroke-width="1.5"/><path stroke-width="2" d="M17.75 19h.01"/></g>',
+    ferramentas: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M3.75 3.25h4.5M6 3.25v8.5M3 11.75h6v4.5a3 3 0 0 1-6 0zM17 3.25v10.5"/><rect x="12.5" y="13.75" width="9" height="2.5" rx="1.25"/><path d="M14 16.25v4.5M17 16.25v4.5M20 16.25v4.5"/></g>',
+    vassoura: '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 2.75v7m-2.75 0h5.5a1 1 0 0 1 1 .9l.25 2.6l2.15 6.65a1 1 0 0 1-.95 1.35H6.8a1 1 0 0 1-.95-1.35L8 13.25l.25-2.6a1 1 0 0 1 1-.9M8 13.25h8m-5.5 8v-4m3 4v-4"/>',
+    sol: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g>',
+    lua: '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
+    sistema: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></g>',
+    instalar: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M12 7v7m0 0l-3-3m3 3l3-3M10 18.5h4"/></g>',
+    lupa: '<g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></g>',
+    ampliar: '<g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M11 8v6M8 11h6"/></g>',
+    baixar: '<path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/>',
+    arqbaixar: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></g>',
+    imagem: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></g>',
+    codigo: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m10 13-2 2 2 2"/><path d="m14 17 2-2-2-2"/></g>',
+    mapa: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></g>',
+    subir: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></g>',
+    offline: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 13v8m0 0l-4-4m4 4l4-4"/><path d="M4.393 15.269A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.436 8.284"/></g>',
+    certo: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></g>',
+    gps: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></g>',
+    partilhar: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/></g>',
+    calendario: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></g>',
+    seta: '<path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/>'
+  };
+  function svg(n, t) { return '<svg width="' + (t || 24) + '" height="' + (t || 24) + '" viewBox="0 0 24 24" aria-hidden="true">' + IC[n] + '</svg>'; }
+
+  /* ---------- Configuração das operações ---------- */
+  var OPERACOES = [
+    { id: "domiciliar", nome: "Domiciliar", icone: "caminhao",
+      campos: ["PLANO", "SETOR", "FREQUÊNCIA", "DIAS DE SERVIÇO", "TURNO", "HORÁRIO"] },
+    { id: "mutirao", nome: "Mutirão", icone: "ferramentas", porArea: true,
+      campos: ["PLANO", "SETOR", "ÁREA", "EQUIPE", "FREQUÊNCIA", "SEMANA DE EXECUÇÃO", "TURNO", "HORÁRIO"] },
+    { id: "varricao", nome: "Varrição", icone: "vassoura",
+      campos: ["PLANO", "SETOR", "FREQUÊNCIA", "DIAS DE SERVIÇO", "TURNO", "HORÁRIO"] }
+  ];
+  // Google My Maps: depois de importar os arquivos de mymaps_pdf/ no My Maps,
+  // cole aqui o código "mid" de cada mapa (fica no link: .../maps/d/edit?mid=XXXX).
+  // Enquanto estiver vazio, o botão "Abrir no My Maps" não aparece.
+  var MYMAPS = { domiciliar: "", mutirao: "", varricao: "" };
+
+  var ROTULO = {
+    "PLANO": "Plano", "SETOR": "Setor", "ÁREA": "Área", "EQUIPE": "Equipe", "FREQUÊNCIA": "Frequência",
+    "DIAS DE SERVIÇO": "Dias de serviço", "SEMANA DE EXECUÇÃO": "Semana de execução",
+    "TURNO": "Turno", "HORÁRIO": "Horário"
+  };
+  var DIAS = ["segunda", "terca", "quarta", "quinta", "sexta", "sabado", "domingo"];
+
+  var D = window.DADOS || {};
+  var app = document.getElementById("app");
+  var titulo = document.getElementById("titulo");
+  var estado = { busca: {}, areasAbertas: {} };
+
+  /* ---------- Utilidades ---------- */
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+  function norm(s) { return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/\s+/g, " ").trim(); }
+  function capital(s) {
+    return String(s || "").toLowerCase().replace(/(^|\s)(\S+)/g, function (m, esp, pal) {
+      return esp + (/^(e|a|de|da|do|às)$/.test(pal) ? pal : pal.charAt(0).toUpperCase() + pal.slice(1));
+    });
+  }
+  function acharOp(id) { for (var i = 0; i < OPERACOES.length; i++) if (OPERACOES[i].id === id) return OPERACOES[i]; }
+  function planos(id) { return D[id] || []; }
+  function acharPlano(id, setor) { var ps = planos(id); for (var i = 0; i < ps.length; i++) if (ps[i].h.SETOR === setor) return ps[i]; }
+
+  // Turno: o Mutirão traz no PDF; no Domiciliar é deduzido do horário de início.
+  function turno(p) {
+    if (p.h.TURNO) return p.h.TURNO;
+    var m = /^(\d{1,2})/.exec(p.h["HORÁRIO"] || "");
+    if (!m) return "";
+    var hora = +m[1];
+    return hora >= 5 && hora < 17 ? "DIURNO" : "NOTURNO";
+  }
+  function campo(p, k) {
+    if (k === "TURNO") return turno(p);
+    if (k === "HORÁRIO") return (p.h[k] || "").replace(/ H(?= |$)/g, " h").replace(/ÀS/g, "às");
+    return p.h[k];
+  }
+  function nomeArea(a) { return "Área " + a; }
+
+  /* ---------- Índice de busca ---------- */
+  function preparar(p) {
+    if (p._idx) return p._idx;
+    var dias = norm(p.h["DIAS DE SERVIÇO"] || "") + " " + norm(p.h["FREQUÊNCIA"] || "");
+    if (/diaria/.test(dias)) dias += " segunda terca quarta quinta sexta sabado";
+    var t = norm(turno(p));
+    var turnos = t + (t === "diurno" ? " manha matutino" : "") + (t === "matutino" ? " manha diurno" : "") +
+      (t === "vespertino" ? " tarde diurno" : "") + (t === "noturno" ? " noite" : "");
+    p._idx = {
+      setor: norm(p.h.SETOR),
+      area: norm(p.h["ÁREA"]),
+      equipe: norm(p.h.EQUIPE),
+      semana: norm(p.h["SEMANA DE EXECUÇÃO"]),
+      horario: norm(p.h["HORÁRIO"]).replace(/\s/g, ""),
+      dias: dias,
+      turnos: turnos,
+      campos: norm([p.h.PLANO, p.h["FREQUÊNCIA"], p.h["DIAS DE SERVIÇO"], turno(p)].concat(p.bairros || []).join(" ")),
+      vias: p.vias.map(function (v) { return v.map(norm); })
+    };
+    return p._idx;
+  }
+
+  // Interpreta a busca: "semana 2", "área 3", "equipe 5", dias, turnos, horários ("18h", "18:00"), ruas e setores.
+  function interpretar(q) {
+    q = norm(q);
+    var f = { semana: null, area: null, equipe: null, dias: [], turnos: [], horas: [], resto: "" };
+    q = q.replace(/\bsemana\s*(\d+)/g, function (_, n) { f.semana = String(+n); return " "; });
+    q = q.replace(/\barea\s*(\d+)/g, function (_, n) { f.area = String(+n); return " "; });
+    q = q.replace(/\bequipe\s*(\d+)/g, function (_, n) { f.equipe = String(+n); return " "; });
+    q = q.replace(/\b(\d{1,2})(?::(\d{2}))?\s*h\b|\b(\d{1,2}):(\d{2})\b/g, function (_, h1, m1, h2, m2) {
+      var h = ("0" + (h1 || h2)).slice(-2), m = m1 || m2;
+      f.horas.push(m ? h + ":" + m : h + ":"); return " ";
+    });
+    q = q.replace(/\b(segunda|terca|quarta|quinta|sexta|sabado|domingo)(-feira)?\b/g, function (_, d) { f.dias.push(d); return " "; });
+    q = q.replace(/\b(matutino|vespertino|noturno|diurno|manha|tarde|noite)\b/g, function (_, t) { f.turnos.push(t); return " "; });
+    f.resto = q.replace(/\s+/g, " ").trim();
+    return f;
+  }
+
+  // Devolve null se o plano não atende; senão, as linhas de vias que contêm a rua buscada.
+  function confere(p, f) {
+    var x = preparar(p);
+    if (f.semana && x.semana !== f.semana) return null;
+    if (f.area && x.area !== f.area) return null;
+    if (f.equipe && x.equipe !== f.equipe) return null;
+    for (var i = 0; i < f.dias.length; i++) if (x.dias.indexOf(f.dias[i]) < 0) return null;
+    for (i = 0; i < f.turnos.length; i++) if (x.turnos.indexOf(f.turnos[i]) < 0) return null;
+    for (i = 0; i < f.horas.length; i++) if (x.horario.indexOf(f.horas[i]) < 0) return null;
+    var linhas = [];
+    if (f.resto) {
+      x.vias.forEach(function (v, k) { if (v.some(function (c) { return c.indexOf(f.resto) >= 0; })) linhas.push(k); });
+      if (!linhas.length && x.setor.indexOf(f.resto.replace(/\s/g, "")) < 0 && x.campos.indexOf(f.resto) < 0) return null;
+    }
+    return linhas;
+  }
+
+  function marcar(texto, termo) {
+    if (!termo) return esc(texto);
+    var n = norm(texto), i = n.indexOf(termo);
+    if (i < 0) return esc(texto);
+    // norm() mantém o tamanho do texto (só remove acentos e junta espaços); por segurança, confere
+    if (n.length !== texto.length) return esc(texto);
+    return esc(texto.slice(0, i)) + "<mark>" + esc(texto.slice(i, i + termo.length)) + "</mark>" + esc(texto.slice(i + termo.length));
+  }
+
+  /* ---------- Tema ---------- */
+  var btnTema = document.getElementById("btnTema");
+  var menuTema = document.getElementById("menuTema");
+  var NOMES_TEMA = { sistema: ["sistema", "Sistema"], claro: ["sol", "Claro"], escuro: ["lua", "Escuro"] };
+  var metaCor = document.querySelector('meta[name="theme-color"]');
+  var escuroSistema = window.matchMedia("(prefers-color-scheme: dark)");
+  function temaAtual() { return document.documentElement.dataset.tema || "sistema"; }
+  function desenharTema() {
+    var t = temaAtual();
+    var escuro = t === "escuro" || (t === "sistema" && escuroSistema.matches);
+    metaCor.setAttribute("content", escuro ? "#161c23" : "#ffffff");
+    btnTema.innerHTML = svg(NOMES_TEMA[t][0], 20);
+    btnTema.setAttribute("aria-label", "Tema: " + NOMES_TEMA[t][1]);
+    menuTema.querySelectorAll("button").forEach(function (b) {
+      var k = b.dataset.tema;
+      b.innerHTML = svg(NOMES_TEMA[k][0], 18) + NOMES_TEMA[k][1];
+      b.setAttribute("aria-checked", k === t ? "true" : "false");
+    });
+  }
+  btnTema.onclick = function (e) {
+    e.stopPropagation();
+    var on = menuTema.classList.toggle("on");
+    btnTema.setAttribute("aria-expanded", on ? "true" : "false");
+  };
+  menuTema.querySelectorAll("button").forEach(function (b) {
+    b.onclick = function () {
+      var k = b.dataset.tema;
+      if (k === "sistema") delete document.documentElement.dataset.tema;
+      else document.documentElement.dataset.tema = k;
+      try { if (k === "sistema") localStorage.removeItem("tema"); else localStorage.setItem("tema", k); } catch (e) {}
+      menuTema.classList.remove("on");
+      desenharTema();
+    };
+  });
+  document.addEventListener("click", function (e) { if (!menuTema.contains(e.target)) menuTema.classList.remove("on"); });
+  if (escuroSistema.addEventListener) escuroSistema.addEventListener("change", desenharTema);
+  desenharTema();
+
+  /* ---------- Instalar como aplicativo (PWA) ---------- */
+  var btnInstalar = document.getElementById("btnInstalar");
+  var pedidoInstalar = null;
+  btnInstalar.innerHTML = svg("instalar", 20) + "Instalar";
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault();
+    pedidoInstalar = e;
+    btnInstalar.classList.add("on");
+  });
+  btnInstalar.onclick = function () {
+    if (!pedidoInstalar) return;
+    pedidoInstalar.prompt();
+    pedidoInstalar.userChoice.then(function () { pedidoInstalar = null; btnInstalar.classList.remove("on"); });
+  };
+  window.addEventListener("appinstalled", function () { btnInstalar.classList.remove("on"); });
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+  }
+
+  /* ---------- Downloads: imagem, PDF (montado no aparelho) e HTML ---------- */
+  function salvarBlob(blob, nome) {
+    var u = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = u; a.download = nome; a.rel = "noopener";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(u); }, 60000);
+  }
+  function ocupado(botao, sim) { if (botao) { if (sim) botao.setAttribute("aria-busy", "true"); else botao.removeAttribute("aria-busy"); } }
+  function falhou() { alert("Não foi possível baixar agora. Confira a internet e tente de novo."); }
+  function pegar(url, tipo) {
+    return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return tipo === "blob" ? r.blob() : r.arrayBuffer(); });
+  }
+  function baixar(url, nome, botao) {
+    ocupado(botao, true);
+    pegar(url, "blob").then(function (b) { salvarBlob(b, nome); }).catch(falhou).then(function () { ocupado(botao, false); });
+  }
+  var scripts = {};
+  function carregarScript(src) {
+    if (!scripts[src]) scripts[src] = new Promise(function (ok, erro) {
+      var el = document.createElement("script"); el.src = src; el.onload = ok; el.onerror = erro; document.head.appendChild(el);
+    });
+    return scripts[src];
+  }
+  function blobParaDataUrl(blob) {
+    return new Promise(function (ok, erro) { var r = new FileReader(); r.onload = function () { ok(r.result); }; r.onerror = erro; r.readAsDataURL(blob); });
+  }
+  function linhasInfo(o, p) {
+    var out = [];
+    o.campos.forEach(function (k) {
+      var v = campo(p, k);
+      if (v) out.push([ROTULO[k], k === "TURNO" ? capital(v) : v]);
+    });
+    if (p.bairros && p.bairros.length) out.push(["Bairros", p.bairros.join(", ")]);
+    return out;
+  }
+  function nomeArquivo(o, p, ext) { return o.nome + " - Setor " + p.h.SETOR + "." + ext; }
+
+  // PDF: página 1 = mapa em alta; páginas seguintes = informações + vias atendidas
+  function baixarPdf(o, p, botao) {
+    ocupado(botao, true);
+    Promise.all([
+      carregarScript("vendor/jspdf.umd.min.js").then(function () { return carregarScript("vendor/jspdf.plugin.autotable.min.js"); }),
+      pegar(urlMapa(p), "buffer")
+    ]).then(function (r) {
+      var doc = new window.jspdf.jsPDF({ orientation: "landscape", unit: "mm", format: "a4", compress: true });
+      doc.setProperties({ title: o.nome + " — Setor " + p.h.SETOR });
+      doc.addImage(new Uint8Array(r[1]), "JPEG", 0, 0, 297, 210, undefined, "FAST");
+      doc.addPage("a4", "landscape");
+      doc.setFont("helvetica", "bold"); doc.setFontSize(16); doc.setTextColor(27, 42, 58);
+      doc.text(o.nome + " — Setor " + p.h.SETOR, 12, 16);
+      doc.autoTable({
+        startY: 22, theme: "grid", styles: { fontSize: 9, cellPadding: 1.8 },
+        columnStyles: { 0: { fontStyle: "bold", cellWidth: 45 } },
+        body: linhasInfo(o, p), margin: { left: 12, right: 12 }
+      });
+      doc.autoTable({
+        startY: doc.lastAutoTable.finalY + 6, theme: "striped",
+        head: [["#", "Via atendida", "Trecho inicial", "Trecho final"]],
+        body: p.vias.map(function (v, i) { return [i + 1, v[0], v[1], v[2]]; }),
+        styles: { fontSize: 9, cellPadding: 1.8 }, headStyles: { fillColor: [95, 158, 0] },
+        columnStyles: { 0: { cellWidth: 9, halign: "right" } }, margin: { left: 12, right: 12 }
+      });
+      salvarBlob(doc.output("blob"), nomeArquivo(o, p, "pdf"));
+    }).catch(falhou).then(function () { ocupado(botao, false); });
+  }
+
+  // HTML: um arquivo só, que abre sem internet (mapa embutido, informações e vias)
+  function baixarHtml(o, p, botao) {
+    ocupado(botao, true);
+    Promise.all([pegar(urlMapa(p), "blob"), pegar("logo_prefeitura.png", "blob"), pegar("logo_belem_limpa.png", "blob")])
+      .then(function (bs) { return Promise.all(bs.map(blobParaDataUrl)); })
+      .then(function (u) {
+        var tit = o.nome + " — Setor " + p.h.SETOR;
+        var info = linhasInfo(o, p).map(function (l) { return "<tr><th>" + esc(l[0]) + "</th><td>" + esc(l[1]) + "</td></tr>"; }).join("");
+        var vias = p.vias.map(function (v, i) {
+          return "<tr><td>" + (i + 1) + "</td><td><b>" + esc(v[0]) + "</b></td><td>" + esc(v[1]) + "</td><td>" + esc(v[2]) + "</td></tr>";
+        }).join("");
+        var css =
+          "body{margin:0;font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#1b2533;background:#f3f5f8}" +
+          "header{background:#fff;border-bottom:1px solid #e1e6ec;padding:10px 14px;display:flex;gap:14px;align-items:center}header img{height:34px}" +
+          "main{max-width:1100px;margin:0 auto;padding:14px}h1{font-size:22px;margin:4px 0 12px;color:#1b2a3a}" +
+          "h2{font-size:14px;margin:18px 0 8px;text-transform:uppercase;letter-spacing:.05em;color:#5c6979}" +
+          ".mapa{display:block;background:#fff;border:1px solid #e1e6ec;border-radius:12px;overflow:hidden}.mapa img{width:100%;display:block}" +
+          "table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #e1e6ec}" +
+          "th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #e1e6ec;vertical-align:top}" +
+          ".info th{width:38%;color:#5c6979;font-weight:600}.vias thead th{background:#5f9e00;color:#fff}p.dica{color:#5c6979;font-size:13px}";
+        var html = '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">' +
+          '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+          "<title>" + esc(tit) + "</title><style>" + css + "</style></head><body>" +
+          '<header><img src="' + u[1] + '" alt="Prefeitura de Belém"><img src="' + u[2] + '" alt="Belém Limpa"></header><main>' +
+          "<h1>" + esc(tit) + "</h1>" +
+          '<a class="mapa" href="' + u[0] + '" target="_blank"><img src="' + u[0] + '" alt="Mapa do setor"></a>' +
+          '<p class="dica">Toque no mapa para abrir em tamanho real e ampliar.</p>' +
+          '<h2>Informações</h2><table class="info">' + info + "</table>" +
+          "<h2>Vias atendidas (" + p.vias.length + ")</h2>" +
+          '<table class="vias"><thead><tr><th>#</th><th>Via atendida</th><th>Trecho inicial</th><th>Trecho final</th></tr></thead><tbody>' + vias + "</tbody></table>" +
+          "</main></body></html>";
+        salvarBlob(new Blob([html], { type: "text/html" }), nomeArquivo(o, p, "html"));
+      }).catch(falhou).then(function () { ocupado(botao, false); });
+  }
+
+  // endereço do mapa com a "versão" do arquivo: quando um mapa é gerado de novo,
+  // o endereço muda e os celulares baixam o novo automaticamente
+  function urlMapa(p, campo) { var u = p[campo || "img"]; return p.v ? u + "?v=" + p.v : u; }
+
+  function linkMyMaps(o, p) {
+    var mid = MYMAPS[o.id];
+    if (!mid || !p.geo || !p.geo.c) return "";
+    return "https://www.google.com/maps/d/viewer?mid=" + encodeURIComponent(mid) +
+      "&ll=" + p.geo.c[0] + "%2C" + p.geo.c[1] + "&z=" + p.geo.z;
+  }
+
+  /* ---------- Salvar mapas para usar sem internet ---------- */
+  var CACHE_MAPAS = window.CACHE_MAPAS || "mapas-v1";
+  var podeSalvar = "caches" in window && window.isSecureContext;
+  function urlsDe(lista) {
+    var u = [];
+    lista.forEach(function (p) {
+      u.push(new URL(urlMapa(p), location.href).href);
+      if (p.prev) u.push(new URL(urlMapa(p, "prev"), location.href).href);
+    });
+    return u;
+  }
+  function botaoSalvar(chave, lista, rotulo) {
+    if (!podeSalvar || !lista.length) return "";
+    var mb = Math.round(lista.length * 0.75);
+    return '<div class="salvar"><button class="btn-linha" data-salvar="' + esc(chave) + '">' + svg("offline", 18) +
+      "<span>" + rotulo + " para usar sem internet (" + lista.length + " mapas, ~" + mb + " MB)</span></button></div>";
+  }
+  function marcarSalvo(b) { b.classList.add("ok"); b.innerHTML = svg("certo", 18) + "<span>Salvo para usar sem internet</span>"; }
+  function ligarSalvar(raiz, listas) {
+    if (!podeSalvar) return;
+    raiz.querySelectorAll("[data-salvar]").forEach(function (b) {
+      var lista = listas[b.dataset.salvar];
+      if (!lista) return;
+      var urls = urlsDe(lista);
+      caches.open(CACHE_MAPAS).then(function (c) {
+        return Promise.all(urls.map(function (u) { return c.match(u); }));
+      }).then(function (r) { if (r.every(Boolean)) marcarSalvo(b); });
+      b.onclick = function (e) {
+        e.stopPropagation();
+        if (b.classList.contains("ok")) return;
+        b.setAttribute("aria-busy", "true");
+        var feitos = 0, txt = b.querySelector("span");
+        caches.open(CACHE_MAPAS).then(function (c) {
+          var fila = urls.slice(), erros = 0;
+          function proximo() {
+            var u = fila.shift();
+            if (!u) return Promise.resolve();
+            return c.match(u).then(function (j) {
+              return j ? null : fetch(u).then(function (r) { if (!r.ok) throw 0; return c.put(u, r); });
+            }).catch(function () { erros++; }).then(function () {
+              feitos++;
+              txt.textContent = "Salvando… " + Math.round(feitos / urls.length * 100) + "%";
+              return proximo();
+            });
+          }
+          return Promise.all([proximo(), proximo(), proximo()]).then(function () { if (erros) throw erros; });
+        }).then(function () { b.removeAttribute("aria-busy"); marcarSalvo(b); })
+          .catch(function () { b.removeAttribute("aria-busy"); txt.textContent = "Não terminou (sem internet?). Toque para tentar de novo"; });
+      };
+    });
+  }
+
+  /* ---------- Telas ---------- */
+  function telaInicio() {
+    titulo.textContent = "";
+    var h = '<section class="inicio">' +
+      '<h1>Mapas do Planejamento</h1><div class="operacoes">';
+    OPERACOES.forEach(function (o) {
+      var n = planos(o.id).length;
+      h += '<button class="op" ' + (n ? 'data-op="' + o.id + '"' : "disabled") + '>' +
+        '<span class="ic">' + svg(o.icone, 34) + '</span>' +
+        '<span><span class="nome">' + o.nome + '</span><span class="qtd">' + (n ? n + " setores" : "") + '</span></span>' +
+        (n ? svg("seta", 24).replace("<svg", '<svg class="seta"') : "") + '</button>';
+    });
+    h += '</div></section>';
+    app.innerHTML = h;
+    app.querySelectorAll("[data-op]").forEach(function (b) {
+      b.onclick = function () { location.hash = "#/" + b.dataset.op; };
+    });
+  }
+
+  function resumo(o, p) {
+    var h = p.h, partes;
+    if (o.porArea) partes = ["Equipe " + h.EQUIPE, "Semana " + h["SEMANA DE EXECUÇÃO"], capital(turno(p)), campo(p, "HORÁRIO")];
+    else partes = [capital(h["DIAS DE SERVIÇO"]), campo(p, "HORÁRIO")];
+    return partes.filter(Boolean).join(" · ");
+  }
+
+  function telaOperacao(id, setor) {
+    var o = acharOp(id);
+    if (!o || !planos(id).length) { location.hash = "#/"; return; }
+    titulo.textContent = o.nome;
+    var p = setor ? acharPlano(id, setor) : null;
+    if (p && o.porArea) estado.areasAbertas[id + p.h["ÁREA"]] = true;
+
+    var dica = o.porArea
+      ? "Busque por rua, setor, área, semana, turno, horário ou dia."
+      : "Busque por rua, setor, dia, turno ou horário.";
+    app.innerHTML =
+      '<div class="layout' + (p ? " com-detalhe" : "") + '">' +
+        '<div class="col-lista">' +
+          '<div class="cab-op"><span class="ic">' + svg(o.icone, 30) + '</span><div><h2>' + o.nome + '</h2><p>' + planos(id).length + ' setores</p></div></div>' +
+          '<div class="busca-wrap">' + svg("lupa", 18) + '<input class="busca" id="busca" type="search" enterkeyhint="search" placeholder="Buscar" autocomplete="off" value="' + esc(estado.busca[id] || "") + '"></div>' +
+          '<p class="dica">' + dica + '</p>' +
+          '<div class="extras" id="extras" hidden></div>' +
+          '<div class="lista" id="lista"></div>' +
+        '</div>' +
+        '<div class="detalhe" id="detalhe"></div>' +
+      '</div>';
+
+    var busca = document.getElementById("busca");
+    busca.oninput = function () { estado.busca[id] = busca.value; estado.aqui = null; desenharLista(o, setor); desenharExtras(o, setor); };
+    busca.onkeydown = function (e) {
+      if (e.key !== "Enter") return;
+      var itens = document.querySelectorAll("#lista .item");
+      if (itens.length === 1) itens[0].click();
+      busca.blur();
+    };
+    desenharLista(o, setor);
+    desenharExtras(o, setor);
+    desenharDetalhe(o, p);
+    var ativo = app.querySelector(".item.ativo");
+    if (ativo && window.innerWidth >= 900) ativo.scrollIntoView({ block: "nearest" });
+  }
+
+  function itemHtml(o, p, setorAtivo, linhas, f) {
+    var achou = "";
+    if (linhas && linhas.length) {
+      var v = p.vias[linhas[0]];
+      var rua = v.filter(function (c) { return norm(c).indexOf(f.resto) >= 0; })[0] || v[0];
+      achou = '<div class="achou">' + marcar(rua, f.resto) + (linhas.length > 1 ? ' <span class="resumo">(' + linhas.length + ' trechos)</span>' : "") + '</div>';
+    }
+    return '<button class="item' + (p.h.SETOR === setorAtivo ? " ativo" : "") + '" data-setor="' + esc(p.h.SETOR) + '">' +
+      '<span><span class="setor">Setor ' + esc(p.h.SETOR) + '</span><br>' +
+      '<span class="resumo">' + esc(resumo(o, p)) + '</span>' + achou + '</span>' + svg("seta", 20).replace("<svg", '<svg class="seta"') + '</button>';
+  }
+
+  function desenharLista(o, setorAtivo) {
+    var id = o.id;
+    var q = (estado.busca[id] || "").trim();
+    var f = q ? interpretar(q) : null;
+    var lista = document.getElementById("lista");
+    if (estado.aqui && estado.aqui.op === id) { desenharAqui(o, setorAtivo, lista); return; }
+    var resultados = [];
+    planos(id).forEach(function (p) {
+      var linhas = f ? confere(p, f) : [];
+      if (linhas) resultados.push({ p: p, linhas: linhas });
+    });
+
+    var h = "";
+    if (o.porArea) {
+      var areas = [], porArea = {};
+      resultados.forEach(function (r) {
+        var a = r.p.h["ÁREA"];
+        if (!porArea[a]) { porArea[a] = []; areas.push(a); }
+        porArea[a].push(r);
+      });
+      areas.sort(function (a, b) { return (+a) - (+b); });
+      areas.forEach(function (a) {
+        var aberta = f || estado.areasAbertas[id + a];
+        h += '<div class="area' + (aberta ? " aberta" : "") + '" data-area="' + esc(a) + '">' +
+          '<button aria-expanded="' + (aberta ? "true" : "false") + '"><span><span class="nome-area">' + esc(nomeArea(a)) + '</span><br>' +
+          '<span class="qtd-area">' + porArea[a].length + (porArea[a].length === 1 ? " setor" : " setores") + '</span></span>' +
+          svg("seta", 20).replace("<svg", '<svg class="chev"') + '</button><div class="sub">' +
+          porArea[a].map(function (r) { return itemHtml(o, r.p, setorAtivo, r.linhas, f); }).join("") +
+          '</div></div>';
+      });
+    } else {
+      h = resultados.map(function (r) { return itemHtml(o, r.p, setorAtivo, r.linhas, f); }).join("");
+    }
+    var listas = {};
+    if (!o.porArea && !f) {
+      listas.todos = planos(id);
+      h = botaoSalvar("todos", listas.todos, "Salvar todos os mapas") + h;
+    }
+    lista.innerHTML = h || '<div class="vazio">Nenhum setor encontrado.</div>';
+    if (o.porArea) {
+      lista.querySelectorAll(".area").forEach(function (el) {
+        var a = el.dataset.area;
+        listas["area" + a] = planos(id).filter(function (p) { return p.h["ÁREA"] === a; });
+        el.querySelector(".sub").insertAdjacentHTML("afterbegin", botaoSalvar("area" + a, listas["area" + a], "Salvar a Área " + a));
+      });
+    }
+    ligarSalvar(lista, listas);
+
+    lista.querySelectorAll(".area > button").forEach(function (b) {
+      b.onclick = function () {
+        var el = b.parentNode, a = el.dataset.area;
+        var on = el.classList.toggle("aberta");
+        b.setAttribute("aria-expanded", on ? "true" : "false");
+        estado.areasAbertas[id + a] = on;
+      };
+    });
+    lista.querySelectorAll("[data-setor]").forEach(function (b) {
+      b.onclick = function () { location.hash = "#/" + id + "/" + encodeURIComponent(b.dataset.setor); };
+    });
+  }
+
+  function desenharDetalhe(o, p) {
+    var el = document.getElementById("detalhe");
+    if (!p) { el.innerHTML = '<div class="placeholder">Selecione um setor na lista.</div>'; return; }
+    var h = p.h;
+    var base = o.nome + " - Setor " + h.SETOR;
+
+    var q = (estado.busca[o.id] || "").trim();
+    var f = q ? interpretar(q) : null;
+    var marcadas = (f && f.resto) ? (confere(p, f) || []) : [];
+
+    var info = o.campos.map(function (k) {
+      var v = campo(p, k);
+      if (!v) return "";
+      return '<div' + (k === "PLANO" ? ' class="largo"' : "") + '><dt>' + ROTULO[k] + '</dt><dd>' + esc(k === "TURNO" ? capital(v) : v) + '</dd></div>';
+    }).join("");
+    if (p.bairros && p.bairros.length) {
+      // logo depois do Plano, para a grade de 2/4 colunas continuar fechando certinho
+      var bai = '<div class="largo"><dt>Bairros</dt><dd>' + esc(p.bairros.join(", ")) + '</dd></div>';
+      var fimPlano = info.indexOf('</div>') + 6;
+      info = info.slice(0, fimPlano) + bai + info.slice(fimPlano);
+    }
+    // o último campo ocupa o espaço que sobra na linha (2 colunas no celular, 4 no computador)
+    (function () {
+      var t = document.createElement("div"); t.innerHTML = info;
+      var curtos = [].filter.call(t.children, function (c) { return !c.classList.contains("largo"); });
+      var n = curtos.length, ult = curtos[n - 1];
+      if (ult) {
+        if (n % 2) ult.classList.add("m2");
+        if (n % 4) ult.classList.add("d" + (4 - n % 4 + 1));
+      }
+      info = t.innerHTML;
+    })();
+    var mm = linkMyMaps(o, p);
+
+    var linhas = p.vias.map(function (v, i) {
+      return '<tr' + (marcadas.indexOf(i) >= 0 ? ' class="marcada"' : "") + '><td>' + esc(v[0]) + '</td><td data-r="Trecho inicial">' + esc(v[1]) + '</td><td data-r="Trecho final">' + esc(v[2]) + '</td></tr>';
+    }).join("");
+
+    el.innerHTML =
+      '<div class="cab"><h2>Setor ' + esc(h.SETOR) + '</h2></div>' +
+      '<dl class="info">' + info + '</dl>' +
+      '<section class="bloco"><h3>Mapa</h3>' +
+        '<button class="mapa-mini" id="abrirMapa" aria-label="Ampliar mapa"><img src="' + esc(urlMapa(p, p.prev ? "prev" : "img")) + '" alt="Mapa do setor ' + esc(h.SETOR) + '"></button>' +
+        '<div class="acoes">' +
+          '<button class="btn pri" id="ampliar">' + svg("ampliar") + 'Ampliar</button>' +
+          '<button class="btn" id="baixarPdf">' + svg("arqbaixar") + 'Baixar PDF</button>' +
+          '<button class="btn" id="baixarJpg">' + svg("imagem") + 'Baixar imagem</button>' +
+          '<button class="btn" id="baixarHtml">' + svg("codigo") + 'Baixar setor (HTML)</button>' +
+          (EXTRAS.mapaGps && p.geo ? '<button class="btn" id="mapaGpsBtn">' + svg("gps") + 'Mapa com GPS</button>' : "") +
+          (EXTRAS.compartilhar ? '<button class="btn" id="partilharBtn">' + svg("partilhar") + 'Compartilhar</button>' : "") +
+          (mm ? '<a class="btn" href="' + esc(mm) + '" target="_blank" rel="noopener">' + svg("mapa") + 'Abrir no My Maps</a>' : "") +
+        '</div>' +
+      '</section>' +
+      '<section class="bloco"><h3>Vias atendidas (' + p.vias.length + ')</h3>' +
+        '<table class="vias"><thead><tr><th>Via atendida</th><th>Trecho inicial</th><th>Trecho final</th></tr></thead><tbody>' + linhas + '</tbody></table>' +
+      '</section>';
+
+    var abrir = function () { abrirVisor(o, p, "Setor " + h.SETOR, base); };
+    document.getElementById("abrirMapa").onclick = abrir;
+    document.getElementById("ampliar").onclick = abrir;
+    document.getElementById("baixarPdf").onclick = function () { baixarPdf(o, p, this); };
+    document.getElementById("baixarJpg").onclick = function () { baixar(urlMapa(p), base + ".jpg", this); };
+    document.getElementById("baixarHtml").onclick = function () { baixarHtml(o, p, this); };
+    var bGps = document.getElementById("mapaGpsBtn");
+    if (bGps) bGps.onclick = function () { abrirMapaGps(o, p); };
+    var bPart = document.getElementById("partilharBtn");
+    if (bPart) bPart.onclick = function () { compartilhar(o, p); };
+  }
+
+  /* ---------- Rotas ---------- */
+  function partesRota() { return location.hash.replace(/^#\/?/, "").split("/").filter(Boolean).map(decodeURIComponent); }
+  function rota() {
+    fecharVisor(true);
+    fecharMapaGps(true);
+    var partes = partesRota();
+    document.body.classList.toggle("em-pagina", partes.length > 0);
+    if (!partes.length) telaInicio();
+    else telaOperacao(partes[0], partes[1]);
+    var opT = partes.length ? acharOp(partes[0]) : null;
+    document.title = opT ? opT.nome + (partes[1] ? " — Setor " + partes[1] : "") + " — Mapas do Planejamento" : "Mapas do Planejamento — Belém Limpa";
+    window.scrollTo(0, 0);
+  }
+  document.getElementById("voltar").onclick = function () {
+    var partes = partesRota();
+    location.hash = (partes.length > 1 && window.innerWidth < 900) ? "#/" + partes[0] : "#/";
+  };
+  document.getElementById("selo").onclick = function () { location.hash = "#/"; };
+  window.addEventListener("hashchange", rota);
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+  /* ---------- Visor com zoom (pinça, arrastar, roda do mouse, toque duplo) ---------- */
+  var visor = document.getElementById("visor");
+  var palco = document.getElementById("palco");
+  var img = document.getElementById("visorImg");
+  var carregando = document.getElementById("carregando");
+  var vPdf = document.getElementById("visorPdf");
+  var vJpg = document.getElementById("visorJpg");
+  vPdf.innerHTML = svg("baixar", 18) + "PDF";
+  vJpg.innerHTML = svg("baixar", 18) + "JPG";
+  var est = { s: 1, x: 0, y: 0, min: 1, max: 8 };
+  var ponteiros = {}, gesto = null, ultimoToque = 0;
+
+  function aplicar() { img.style.transform = "translate(" + est.x + "px," + est.y + "px) scale(" + est.s + ")"; }
+  function limitar() {
+    var W = palco.clientWidth, H = palco.clientHeight;
+    var w = img.naturalWidth * est.s, h = img.naturalHeight * est.s;
+    est.x = w <= W ? (W - w) / 2 : Math.min(0, Math.max(W - w, est.x));
+    est.y = h <= H ? (H - h) / 2 : Math.min(0, Math.max(H - h, est.y));
+  }
+  function ajustar() {
+    if (!img.naturalWidth) return;
+    est.min = Math.min(palco.clientWidth / img.naturalWidth, palco.clientHeight / img.naturalHeight);
+    est.max = Math.max(est.min * 10, 1.5);
+    est.s = est.min; limitar(); aplicar();
+  }
+  function zoomEm(px, py, nova) {
+    nova = Math.min(est.max, Math.max(est.min, nova));
+    var f = nova / est.s;
+    est.x = px - (px - est.x) * f; est.y = py - (py - est.y) * f;
+    est.s = nova; limitar(); aplicar();
+  }
+  function abrirVisor(o, p, nome, base) {
+    document.getElementById("visorNome").textContent = nome;
+    vPdf.onclick = function () { baixarPdf(o, p, vPdf); };
+    vJpg.onclick = function () { baixar(urlMapa(p), base + ".jpg", vJpg); };
+    carregando.style.display = "flex";
+    img.style.visibility = "hidden";
+    img.onload = function () { carregando.style.display = "none"; img.style.visibility = "visible"; ajustar(); };
+    img.src = urlMapa(p);
+    if (img.complete && img.naturalWidth) img.onload();
+    visor.classList.add("on");
+    visor.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    history.pushState({ visor: true }, "");
+  }
+  function fecharVisor(semHistorico) {
+    if (!visor.classList.contains("on")) return;
+    visor.classList.remove("on");
+    visor.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    if (!semHistorico && history.state && history.state.visor) history.back();
+  }
+  document.getElementById("visorFechar").onclick = function () { fecharVisor(false); };
+  window.addEventListener("popstate", function () { if (visor.classList.contains("on")) fecharVisor(true); });
+  window.addEventListener("resize", function () { if (visor.classList.contains("on")) ajustar(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") fecharVisor(false); });
+
+  palco.addEventListener("wheel", function (e) {
+    e.preventDefault();
+    var r = palco.getBoundingClientRect();
+    zoomEm(e.clientX - r.left, e.clientY - r.top, est.s * Math.exp(-e.deltaY * 0.0015));
+  }, { passive: false });
+  palco.addEventListener("pointerdown", function (e) {
+    palco.setPointerCapture(e.pointerId);
+    ponteiros[e.pointerId] = { x: e.clientX, y: e.clientY };
+    var ids = Object.keys(ponteiros);
+    if (ids.length === 1) {
+      var agora = Date.now();
+      if (agora - ultimoToque < 300) {
+        var r = palco.getBoundingClientRect();
+        zoomEm(e.clientX - r.left, e.clientY - r.top, est.s > est.min * 1.05 ? est.min : est.min * 3);
+        ultimoToque = 0;
+      } else ultimoToque = agora;
+      gesto = { tipo: "arrastar", x0: e.clientX, y0: e.clientY, ex: est.x, ey: est.y };
+    } else if (ids.length === 2) {
+      var a = ponteiros[ids[0]], b = ponteiros[ids[1]];
+      gesto = { tipo: "pinca", d0: Math.hypot(a.x - b.x, a.y - b.y), s0: est.s };
+    }
+  });
+  palco.addEventListener("pointermove", function (e) {
+    if (!ponteiros[e.pointerId]) return;
+    ponteiros[e.pointerId] = { x: e.clientX, y: e.clientY };
+    var ids = Object.keys(ponteiros);
+    if (gesto && gesto.tipo === "arrastar" && ids.length === 1) {
+      est.x = gesto.ex + (e.clientX - gesto.x0); est.y = gesto.ey + (e.clientY - gesto.y0);
+      limitar(); aplicar();
+    } else if (gesto && gesto.tipo === "pinca" && ids.length === 2) {
+      var a = ponteiros[ids[0]], b = ponteiros[ids[1]], r = palco.getBoundingClientRect();
+      zoomEm((a.x + b.x) / 2 - r.left, (a.y + b.y) / 2 - r.top, gesto.s0 * Math.hypot(a.x - b.x, a.y - b.y) / gesto.d0);
+    }
+  });
+  function soltar(e) {
+    delete ponteiros[e.pointerId];
+    var ids = Object.keys(ponteiros);
+    if (ids.length === 1) { var p = ponteiros[ids[0]]; gesto = { tipo: "arrastar", x0: p.x, y0: p.y, ex: est.x, ey: est.y }; }
+    else if (!ids.length) gesto = null;
+  }
+  palco.addEventListener("pointerup", soltar);
+  palco.addEventListener("pointercancel", soltar);
+
+  /* =====================================================================
+     EXTRAS (em teste) — para tirar qualquer um, troque true por false:
+       mapaGps:      botão "Mapa com GPS" no setor (mapa interativo com sua localização)
+       setoresAqui:  botão "Setores aqui" na lista (quais setores atendem onde você está)
+       compartilhar: botão "Compartilhar" no setor (WhatsApp e outros apps)
+       hoje:         botão "Hoje" na lista da Domiciliar (setores com coleta no dia)
+     ===================================================================== */
+  var EXTRAS = { mapaGps: true, setoresAqui: true, compartilhar: true, hoje: true };
+
+  var geoCache = {};
+  function carregarGeo(op) {
+    if (!geoCache[op]) geoCache[op] = fetch("geo/" + op + ".json").then(function (r) { if (!r.ok) throw 0; return r.json(); });
+    return geoCache[op];
+  }
+  var leafletPronto = null;
+  function carregarLeaflet() {
+    if (!leafletPronto) {
+      var css = document.createElement("link"); css.rel = "stylesheet"; css.href = "vendor/leaflet/leaflet.css"; document.head.appendChild(css);
+      leafletPronto = carregarScript("vendor/leaflet/leaflet.js");
+    }
+    return leafletPronto;
+  }
+  var DIAS_SEMANA = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
+
+  // distância (m) de um ponto até o desenho do setor (0 se estiver dentro da área)
+  function distanciaAoSetor(lat, lon, g) {
+    var kx = 111320 * Math.cos(lat * Math.PI / 180), ky = 110574, melhor = Infinity;
+    function seg(a, b) {
+      var ax = (a[1] - lon) * kx, ay = (a[0] - lat) * ky, bx = (b[1] - lon) * kx, by = (b[0] - lat) * ky;
+      var dx = bx - ax, dy = by - ay, L = dx * dx + dy * dy, t = L ? Math.max(0, Math.min(1, -(ax * dx + ay * dy) / L)) : 0;
+      var px = ax + t * dx, py = ay + t * dy;
+      return Math.sqrt(px * px + py * py);
+    }
+    (g.l || []).forEach(function (L) { for (var i = 1; i < L.length; i++) melhor = Math.min(melhor, seg(L[i - 1], L[i])); });
+    (g.p || []).forEach(function (P) {
+      var dentro = false;
+      for (var i = 0, j = P.length - 1; i < P.length; j = i++) {
+        if ((P[i][0] > lat) !== (P[j][0] > lat) && lon < (P[j][1] - P[i][1]) * (lat - P[i][0]) / (P[j][0] - P[i][0]) + P[i][1]) dentro = !dentro;
+      }
+      if (dentro) melhor = 0;
+    });
+    return melhor;
+  }
+
+  function pegarLocal() {
+    return new Promise(function (ok, erro) {
+      if (!navigator.geolocation) return erro(new Error("Este aparelho não informa a localização."));
+      navigator.geolocation.getCurrentPosition(function (pos) { ok(pos.coords); }, function (e) {
+        erro(new Error(e.code === 1 ? "Permita o acesso à localização para usar esta função." : "Não foi possível pegar sua localização agora."));
+      }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 30000 });
+    });
+  }
+
+  // ---- botões da lista: Hoje / Setores aqui ----
+  function desenharExtras(o, setorAtivo) {
+    var el = document.getElementById("extras");
+    if (!el) return;
+    var h = "";
+    var dia = DIAS_SEMANA[new Date().getDay()];
+    if (EXTRAS.hoje && o.id === "domiciliar") {
+      var on = norm(estado.busca[o.id] || "") === norm(dia);
+      h += '<button class="chip-btn' + (on ? " on" : "") + '" id="btnHoje">' + svg("calendario", 18) + "Hoje (" + capital(dia) + ")</button>";
+    }
+    if (EXTRAS.setoresAqui && navigator.geolocation) {
+      h += '<button class="chip-btn' + (estado.aqui && estado.aqui.op === o.id ? " on" : "") + '" id="btnAqui">' + svg("gps", 18) + "Setores aqui</button>";
+    }
+    el.innerHTML = h;
+    el.hidden = !h;
+    var bh = document.getElementById("btnHoje");
+    if (bh) bh.onclick = function () {
+      var busca = document.getElementById("busca");
+      estado.aqui = null;
+      estado.busca[o.id] = bh.classList.contains("on") ? "" : capital(dia);
+      busca.value = estado.busca[o.id];
+      desenharLista(o, setorAtivo); desenharExtras(o, setorAtivo);
+    };
+    var ba = document.getElementById("btnAqui");
+    if (ba) ba.onclick = function () {
+      if (ba.classList.contains("on")) { estado.aqui = null; desenharLista(o, setorAtivo); desenharExtras(o, setorAtivo); return; }
+      ba.setAttribute("aria-busy", "true");
+      ba.lastChild.textContent = "Localizando…";
+      Promise.all([pegarLocal(), carregarGeo(o.id)]).then(function (r) {
+        var c = r[0], geo = r[1], achados = [];
+        planos(o.id).forEach(function (p) {
+          var g = geo[p.h.SETOR];
+          if (!g) return;
+          var d = distanciaAoSetor(c.latitude, c.longitude, g);
+          if (d <= 80 + Math.min(c.accuracy || 0, 120)) achados.push({ p: p, d: d });
+        });
+        achados.sort(function (a, b) { return a.d - b.d; });
+        estado.aqui = { op: o.id, itens: achados, precisao: Math.round(c.accuracy || 0) };
+      }).catch(function (e) { alert(e.message || "Não foi possível localizar."); })
+        .then(function () { ba.removeAttribute("aria-busy"); desenharLista(o, setorAtivo); desenharExtras(o, setorAtivo); });
+    };
+  }
+
+  function desenharAqui(o, setorAtivo, lista) {
+    var a = estado.aqui;
+    var h = '<div class="aviso-aqui">' + (a.itens.length
+      ? a.itens.length + (a.itens.length === 1 ? " setor atende" : " setores atendem") + " onde você está"
+      : "Nenhum setor desta operação passa onde você está") +
+      (a.precisao ? " (precisão do GPS: ~" + a.precisao + " m)" : "") + "</div>";
+    h += a.itens.map(function (x) {
+      var dist = x.d < 1 ? "dentro da área" : "a " + Math.round(x.d) + " m";
+      return itemHtml(o, x.p, setorAtivo, null, null).replace('<span class="resumo">', '<span class="resumo">' + dist + " · ");
+    }).join("");
+    lista.innerHTML = h;
+    lista.querySelectorAll("[data-setor]").forEach(function (b) {
+      b.onclick = function () { location.hash = "#/" + o.id + "/" + encodeURIComponent(b.dataset.setor); };
+    });
+  }
+
+  // ---- Compartilhar ----
+  function compartilhar(o, p) {
+    var url = location.origin + location.pathname + "#/" + o.id + "/" + encodeURIComponent(p.h.SETOR);
+    var texto = o.nome + " — Setor " + p.h.SETOR;
+    if (navigator.share) {
+      navigator.share({ title: texto, text: texto, url: url }).catch(function () {});
+    } else {
+      window.open("https://wa.me/?text=" + encodeURIComponent(texto + "\n" + url), "_blank", "noopener");
+    }
+  }
+
+  // ---- Mapa interativo com GPS ----
+  var mg = { el: null, mapa: null, camadas: null, base: null, satelite: false, local: null, vigia: null, seguir: false };
+  function fecharMapaGps(semHistorico) {
+    if (!mg.el || mg.el.hidden) return;
+    mg.el.hidden = true;
+    document.body.style.overflow = "";
+    if (mg.vigia != null) { navigator.geolocation.clearWatch(mg.vigia); mg.vigia = null; }
+    if (!semHistorico && history.state && history.state.mapaGps) history.back();
+  }
+  function abrirMapaGps(o, p) {
+    mg.el = document.getElementById("mapaGps");
+    document.getElementById("mapaGpsNome").textContent = "Setor " + p.h.SETOR;
+    mg.el.hidden = false;
+    document.body.style.overflow = "hidden";
+    history.pushState({ mapaGps: true }, "");
+    var aviso = document.getElementById("mapaGpsAviso");
+    aviso.hidden = false; aviso.textContent = "Carregando mapa…";
+    Promise.all([carregarLeaflet(), carregarGeo(o.id)]).then(function (r) {
+      var L = window.L, g = r[1][p.h.SETOR];
+      if (!mg.mapa) {
+        mg.mapa = L.map("mapaGpsCaixa", { zoomControl: true, attributionControl: true });
+        mg.ruas = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", { maxZoom: 19, maxNativeZoom: 19, attribution: "Mapa base © Esri" });
+        mg.sat = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { maxZoom: 19, maxNativeZoom: 19, attribution: "Imagem © Esri" });
+        mg.ruas.addTo(mg.mapa);
+        mg.camadas = L.layerGroup().addTo(mg.mapa);
+      }
+      mg.camadas.clearLayers();
+      if (mg.local) { mg.local.forEach(function (x) { mg.mapa.removeLayer(x); }); mg.local = null; }
+      setTimeout(function () { mg.mapa.invalidateSize(); }, 50);
+      if (!g) { aviso.textContent = "Este setor ainda não tem o desenho no mapa."; return; }
+      aviso.hidden = true;
+      var grupo = [];
+      (g.p || []).forEach(function (P) { grupo.push(L.polygon(P, { color: "#3c78b4", weight: 1.5, fillColor: "#8cb4e6", fillOpacity: .35 }).addTo(mg.camadas)); });
+      (g.l || []).forEach(function (Ls) { grupo.push(L.polyline(Ls, { color: "#e02a2a", weight: 5, opacity: .9 }).addTo(mg.camadas)); });
+      var b = L.featureGroup(grupo).getBounds();
+      setTimeout(function () { mg.mapa.invalidateSize(); mg.mapa.fitBounds(b, { padding: [24, 24] }); }, 60);
+    }).catch(function () { aviso.hidden = false; aviso.textContent = "Não foi possível carregar o mapa (sem internet?)."; });
+  }
+  function ligarMapaGps() {
+    var el = document.getElementById("mapaGps");
+    if (!el) return;
+    document.getElementById("mapaGpsFechar").onclick = function () { fecharMapaGps(false); };
+    window.addEventListener("popstate", function () { if (el && !el.hidden) fecharMapaGps(true); });
+    document.getElementById("mapaGpsSat").onclick = function () {
+      if (!mg.mapa) return;
+      mg.satelite = !mg.satelite;
+      if (mg.satelite) { mg.mapa.removeLayer(mg.ruas); mg.sat.addTo(mg.mapa); } else { mg.mapa.removeLayer(mg.sat); mg.ruas.addTo(mg.mapa); }
+      mg.camadas.eachLayer(function (l) { l.bringToFront && l.bringToFront(); });
+      this.classList.toggle("on", mg.satelite);
+    };
+    document.getElementById("mapaGpsLocal").onclick = function () {
+      var bt = this;
+      if (!mg.mapa || !navigator.geolocation) return;
+      if (mg.vigia != null) {
+        navigator.geolocation.clearWatch(mg.vigia); mg.vigia = null; bt.classList.remove("on");
+        if (mg.local) { mg.local.forEach(function (x) { mg.mapa.removeLayer(x); }); mg.local = null; }
+        return;
+      }
+      bt.classList.add("on");
+      var primeira = true;
+      mg.vigia = navigator.geolocation.watchPosition(function (pos) {
+        var L = window.L, ll = [pos.coords.latitude, pos.coords.longitude];
+        if (!mg.local) {
+          mg.local = [
+            L.circle(ll, { radius: pos.coords.accuracy, color: "#1b75bc", weight: 1, fillOpacity: .12 }).addTo(mg.mapa),
+            L.circleMarker(ll, { radius: 8, color: "#fff", weight: 3, fillColor: "#1b75bc", fillOpacity: 1 }).addTo(mg.mapa)
+          ];
+        } else {
+          mg.local[0].setLatLng(ll).setRadius(pos.coords.accuracy);
+          mg.local[1].setLatLng(ll);
+        }
+        if (primeira) { mg.mapa.setView(ll, Math.max(mg.mapa.getZoom(), 17)); primeira = false; }
+      }, function (e) {
+        alert(e.code === 1 ? "Permita o acesso à localização para usar esta função." : "Não foi possível pegar sua localização agora.");
+        bt.classList.remove("on"); mg.vigia = null;
+      }, { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 });
+    };
+  }
+  ligarMapaGps();
+
+  /* ---------- Voltar ao topo ---------- */
+  var btnSubir = document.getElementById("btnSubir");
+  btnSubir.innerHTML = svg("subir", 24);
+  btnSubir.onclick = function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    var col = document.querySelector(".col-lista .lista");
+    if (col) col.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  function verSubir() {
+    var col = document.querySelector(".col-lista .lista");
+    var desceu = window.scrollY > 500 || (col && col.scrollTop > 500);
+    btnSubir.classList.toggle("on", !!desceu);
+  }
+  window.addEventListener("scroll", verSubir, { passive: true });
+  document.addEventListener("scroll", function (e) { if (e.target && e.target.classList && e.target.classList.contains("lista")) verSubir(); }, { passive: true, capture: true });
+
+  rota();
+})();
+</script>
+</body>
+</html>
