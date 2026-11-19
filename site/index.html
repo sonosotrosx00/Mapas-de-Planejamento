@@ -520,10 +520,11 @@
   }
   function campo(p, k) {
     if (k === "TURNO") return turno(p);
+    if (k === "ÁREA" && p.h[k] === "999") return "Sábados (avulsos)";
     if (k === "HORÁRIO") return (p.h[k] || "").replace(/ H(?= |$)/g, " h").replace(/ÀS/g, "às");
     return p.h[k];
   }
-  function nomeArea(a) { return "Área " + a; }
+  function nomeArea(a) { return a === "999" ? "Sábados (avulsos)" : "Área " + a; }
 
   /* ---------- Índice de busca ---------- */
   function preparar(p) {
@@ -933,7 +934,7 @@
       lista.querySelectorAll(".area").forEach(function (el) {
         var a = el.dataset.area;
         listas["area" + a] = planos(id).filter(function (p) { return p.h["ÁREA"] === a; });
-        el.querySelector(".sub").insertAdjacentHTML("afterbegin", botaoSalvar("area" + a, listas["area" + a], "Salvar a Área " + a));
+        el.querySelector(".sub").insertAdjacentHTML("afterbegin", botaoSalvar("area" + a, listas["area" + a], "Salvar " + (a === "999" ? "os Sábados avulsos" : "a Área " + a)));
       });
     }
     ligarSalvar(lista, listas);

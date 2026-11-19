@@ -13,6 +13,7 @@ O PDF do setor é montado no próprio aparelho (mapa + página com as vias).
 Requer: pip install pymupdf pillow
 """
 import hashlib, json, os, re, sys
+from corrigir_vias import corrigir_via
 import pymupdf as fitz
 from PIL import Image
 
@@ -263,6 +264,7 @@ for op, fname, lig in OPS:
         while j < d.page_count and "VIA ATENDIDA" in d[j].get_text():
             vias += table(d[j], lig)
             j += 1
+        vias = [[corrigir_via(c) for c in v] for v in vias]
         setor = h["SETOR"]
         slug = re.sub(r"[^A-Za-z0-9]+", "-", setor).strip("-")
         img = f"mapas/{op}/{slug}.jpg"
@@ -282,6 +284,7 @@ for op, fname, lig in OPS:
         g = GEO.get(op, {}).get(setor)
         # bairros: pela geometria do setor (limites do IBGE); sem geometria, pelos nomes impressos no mapa
         bai = bairros_pela_geometria(g) or bairros(p)
+        bai = ["Vila (Mosqueiro)" if b == "Vila" else b for b in bai]
         plano = {"h": h, "bairros": bai, "vias": vias, "img": img, "prev": prev, "v": md5.hexdigest()[:8]}
         if g and g.get("c"):
             plano["geo"] = {"c": g["c"], "z": g["z"]}
