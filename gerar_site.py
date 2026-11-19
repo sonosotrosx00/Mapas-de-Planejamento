@@ -107,26 +107,40 @@ def header(page, lig):
     return h
 
 
+def _ch(t):
+    import unicodedata
+    t = unicodedata.normalize("NFD", t).encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]+", " ", t).strip()
+
+
 def bairros(page):
-    """Nomes de bairro impressos no mapa (texto grande, cinza claro)."""
-    achados = []
+    """Reserva para setor sem geometria: nomes de bairro impressos no mapa (texto grande, cinza claro).
+    A fonte do PDF troca "ti" por ":" ("Fá:ma" = Fátima); só ficam nomes que existem na lista do IBGE."""
+    oficiais = {}
+    for nome, _ in BAIRROS_POL:
+        oficiais[_ch(nome)] = nome
+        m = re.search(r"\((.+)\)", nome)            # "Montese (Terra Firme)" também vale como "Terra Firme"
+        if m:
+            oficiais[_ch(m.group(1))] = nome
+    linhas = []
     for b in page.get_text("dict")["blocks"]:
         for l in b.get("lines", []):
-            for s in l["spans"]:
-                if s["size"] > 20 and s["color"] == 0xB4B4B4 and s["bbox"][1] < 560:
-                    achados.append((round(s["bbox"][1]), s["bbox"][0], s["text"].strip()))
-    # junta nomes quebrados em duas linhas (mesma coluna, linhas seguidas)
-    achados.sort()
-    nomes, usados = [], set()
-    for i, (y, x, t) in enumerate(achados):
-        if i in usados or not t:
+            sp = [s for s in l["spans"] if s["size"] > 20 and s["color"] == 0xB4B4B4 and s["bbox"][1] < 560]
+            if sp:
+                t = "".join(s["text"] for s in sp).replace(":", "ti").strip()
+                linhas.append((l["bbox"][1], l["bbox"][0], t))
+    linhas.sort()
+    achados, usados = set(), set()
+    for i, (y, x, t) in enumerate(linhas):
+        if i in usados:
             continue
-        for j in range(i + 1, len(achados)):
-            y2, x2, t2 = achados[j]
-            if j not in usados and 0 < y2 - y < 40 and abs(x2 - x) < 60:
-                t = t + " " + t2; usados.add(j); break
-        nomes.append(t)
-    return sorted(set(nomes))
+        if _ch(t) in oficiais:
+            achados.add(oficiais[_ch(t)]); continue
+        for j in range(i + 1, len(linhas)):         # nome quebrado em duas linhas
+            y2, x2, t2 = linhas[j]
+            if j not in usados and 0 < y2 - y < 40 and abs(x2 - x) < 80 and _ch(t + " " + t2) in oficiais:
+                achados.add(oficiais[_ch(t + " " + t2)]); usados.add(j); break
+    return sorted(achados)
 
 
 INICIO_COL = {0: 58.5, 1: 286.0, 2: 513.5}

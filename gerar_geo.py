@@ -142,7 +142,7 @@ def escala_da_barra(page):
     """Metros por ponto, lidos da barra de escala de 100 m no canto do mapa."""
     for d in page.get_drawings():
         c, r = d.get("color"), d["rect"]
-        if c and abs(c[0] - 0.027) < 0.02 and abs(c[2] - 0.47) < 0.03 and 545 < r.y0 < 556 and r.x0 < 30 and r.width > 10:
+        if c and abs(c[0] - 0.027) < 0.02 and abs(c[2] - 0.47) < 0.03 and 545 < r.y0 < 556 and r.x0 < 30 and r.width > 3:
             return 100.0 / r.width
     return None
 
@@ -182,7 +182,7 @@ def georref(page, base):
     if len(rots) < 3 or len(G) < 50:
         return None
     s0 = escala_da_barra(page)
-    escalas = s0 * np.linspace(0.96, 1.04, 9) if s0 else np.exp(np.linspace(math.log(0.6), math.log(8), 160))
+    escalas = s0 * np.linspace(0.96, 1.04, 9) if s0 else np.exp(np.linspace(math.log(0.6), math.log(30), 220))
     candidatos = []
     for s in escalas:
         votos = {}
@@ -450,7 +450,7 @@ def main():
                 rel.append([op, setor, "", "", "", "", "não georreferenciado"])
                 print(op, setor, "FALHOU", flush=True)
                 continue
-            if T[4] < 0.6:
+            if T[4] < 0.35:
                 rel.append([op, setor, f"{T[4]:.0%}", f"{T[3]:.0%}", "", 0, "não georreferenciado (nomes não conferem)"])
                 print(op, setor, f"nomes={T[4]:.0%} NAO CONFERE", flush=True)
                 continue

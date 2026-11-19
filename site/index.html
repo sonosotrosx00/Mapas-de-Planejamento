@@ -200,6 +200,7 @@
     background: var(--cartao); text-align: left; cursor: pointer;
   }
   .item.ativo { border-color: var(--foco); box-shadow: 0 0 0 2px var(--foco) inset; }
+  .item.visto { border-color: var(--verde); box-shadow: inset 4px 0 0 var(--verde); }
   .item .setor { font-weight: 800; font-size: 16px; color: var(--titulo); }
   .item .resumo { font-size: 13px; color: var(--suave); }
   .item .achou { font-size: 13px; margin-top: 3px; }
@@ -491,7 +492,7 @@
   var D = window.DADOS || {};
   var app = document.getElementById("app");
   var titulo = document.getElementById("titulo");
-  var estado = { busca: {}, areasAbertas: {} };
+  var estado = { busca: {}, areasAbertas: {}, ultimo: {} };
 
   /* ---------- Utilidades ---------- */
   function esc(s) {
@@ -870,7 +871,10 @@
     desenharExtras(o, setor);
     desenharDetalhe(o, p);
     var ativo = app.querySelector(".item.ativo");
-    if (ativo && window.innerWidth >= 900) ativo.scrollIntoView({ block: "nearest" });
+    if (ativo && window.innerWidth >= 900) {
+      var col = ativo.closest(".lista"), a = ativo.getBoundingClientRect(), c = col.getBoundingClientRect();
+      if (a.top < c.top || a.bottom > c.bottom) ativo.scrollIntoView({ block: "nearest" });
+    }
   }
 
   function itemHtml(o, p, setorAtivo, linhas, f) {
@@ -880,7 +884,8 @@
       var rua = v.filter(function (c) { return norm(c).indexOf(f.resto) >= 0; })[0] || v[0];
       achou = '<div class="achou">' + marcar(rua, f.resto) + (linhas.length > 1 ? ' <span class="resumo">(' + linhas.length + ' trechos)</span>' : "") + '</div>';
     }
-    return '<button class="item' + (p.h.SETOR === setorAtivo ? " ativo" : "") + '" data-setor="' + esc(p.h.SETOR) + '">' +
+    var visto = !setorAtivo && estado.ultimo[o.id] === p.h.SETOR;
+    return '<button class="item' + (p.h.SETOR === setorAtivo ? " ativo" : "") + (visto ? " visto" : "") + '" data-setor="' + esc(p.h.SETOR) + '">' +
       '<span><span class="setor">Setor ' + esc(p.h.SETOR) + '</span><br>' +
       '<span class="resumo">' + esc(resumo(o, p)) + '</span>' + achou + '</span>' + svg("seta", 20).replace("<svg", '<svg class="seta"') + '</button>';
   }
@@ -1017,16 +1022,31 @@
 
   /* ---------- Rotas ---------- */
   function partesRota() { return location.hash.replace(/^#\/?/, "").split("/").filter(Boolean).map(decodeURIComponent); }
+  // Ao voltar para uma lista, a tela volta para onde estava (e o último setor aberto fica marcado)
+  var posicoes = {}, rolagemLista = {}, hashAtual = location.hash, opAtual = null;
+  function guardarPosicao() {
+    posicoes[hashAtual] = window.scrollY;
+    var col = document.querySelector(".col-lista .lista");
+    if (col && opAtual) rolagemLista[opAtual] = col.scrollTop;
+  }
   function rota() {
+    guardarPosicao();
     fecharVisor(true);
     fecharMapaGps(true);
     var partes = partesRota();
+    hashAtual = location.hash;
+    opAtual = partes[0] || null;
+    if (partes[1]) estado.ultimo[partes[0]] = partes[1];
     document.body.classList.toggle("em-pagina", partes.length > 0);
     if (!partes.length) telaInicio();
     else telaOperacao(partes[0], partes[1]);
     var opT = partes.length ? acharOp(partes[0]) : null;
     document.title = opT ? opT.nome + (partes[1] ? " — Setor " + partes[1] : "") + " — Mapas do Planejamento" : "Mapas do Planejamento — Belém Limpa";
-    window.scrollTo(0, 0);
+    var y = posicoes[hashAtual] || 0;
+    var col = document.querySelector(".col-lista .lista");
+    if (col && rolagemLista[opAtual]) col.scrollTop = rolagemLista[opAtual];
+    window.scrollTo(0, y);
+    if (y) requestAnimationFrame(function () { window.scrollTo(0, y); });
   }
   document.getElementById("voltar").onclick = function () {
     var partes = partesRota();
